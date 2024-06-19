@@ -8,4 +8,8 @@ TBD
 TBD
 
 
+nvm install 20
+nvm use 20
+npx create-react-app front
+npm start
 
