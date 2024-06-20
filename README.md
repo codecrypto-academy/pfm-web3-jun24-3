@@ -1,18 +1,16 @@
 # TFM W3ETH G3
 
+## FRONT
 
-### Pre-Requisites
 
 ```sh
 cd front
-```
 
-```sh
 npm install ethers@5.7.2
 ```
-At that point was needed downgrade ethers to that version
+Note for Devs: At that point was needed downgrade ethers to that version
 
-To start the front:
+#### 🚂 Starting the front:
 
 ```sh
 npm start
