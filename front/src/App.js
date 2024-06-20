@@ -7,13 +7,10 @@ function App() {
   const [balance, setBalance] = useState(null);
 
   const handleConnectWallet = async () => {
-    console.log("Connecting to wallet...");
     const result = await getAccount();
     if (result) {
-      console.log("Setting Account State:", result.account);
       setAccount(result.account);
       const balance = await getBalance(result.account, result.provider);
-      console.log("Setting Balance State:", balance);
       setBalance(balance);
     } else {
       console.error("Failed to connect wallet");
