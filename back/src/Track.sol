@@ -1,5 +1,5 @@
-//SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.26;
+//SPDX-License-Identifier: MIT
+pragma solidity 0.8.26;
 
 contract Track {
     address public owner;
@@ -12,7 +12,10 @@ contract Track {
 
     function setOwner(address _owner) public {
         //Only current owner can set new owner
-        require(msg.sender == owner, "Error: Only current owner can set new owner");
+        require(
+            msg.sender == owner,
+            "Error: Only current owner can set new owner"
+        );
         owner = _owner;
     }
 

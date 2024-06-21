@@ -1,5 +1,5 @@
-//SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.26;
+//SPDX-License-Identifier: MIT
+pragma solidity 0.8.26;
 
 import {Test, console} from "forge-std/Test.sol";
 import {Track} from "../src/Track.sol";
@@ -8,7 +8,7 @@ contract TrackTest is Test {
     Track public track;
 
     //Contract state Initialization for each test execution
-    function setUp() public {
+    function setUp() external {
         track = new Track();
         track.setTrackId(0);
     }
