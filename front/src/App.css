@@ -47,6 +47,12 @@ button.register-button {
   transition: background-color 0.3s ease; /* Smooth transition */
 }
 
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+
 button.register-button:hover {
   background-color: #0056b3; /* Background color on hover */
 }
@@ -55,11 +61,4 @@ button.register-button:hover {
   color: #61dafb;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
+

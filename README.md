@@ -14,6 +14,7 @@ nvm use 20
 cd front
 
 npm install ethers@5.7.2
+
 ```
 Note for Devs: At that point was needed downgrade ethers to that version
 

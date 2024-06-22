@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+// import { getAccount, getBalance } from './metamask';
+
 
 const Register = ({ account }) => {
   const [role, setRole] = useState('');
@@ -25,19 +27,23 @@ const Register = ({ account }) => {
       <h2>Register</h2>
       <form onSubmit={handleSubmit}>
         <div>
-          <label htmlFor="address">Connected Address:</label>
+          <label htmlFor="address">Connected Address:  </label>
           <input type="text" id="address" value={account || ''} readOnly />
+          <br></br><br></br>
         </div>
         <div>
-          <label htmlFor="role">Role:</label>
+          <label htmlFor="role">Tipo de Actor:  </label>
           <select id="role" value={role} onChange={handleRoleChange}>
-            <option value="">Select a role</option>
-            <option value="user">User</option>
-            <option value="admin">Admin</option>
+            <option value="">Seleecione uno</option>
+            <option value="agricultor">Agricultor</option>
+            <option value="bodegero">Bodegero</option>
+            <option value="transportista">Transportista</option>
+            <option value="vendedor">Vendedor</option>
           </select>
+          <br></br><br></br>
         </div>
         <div>
-          <label htmlFor="email">Email:</label>
+          <label htmlFor="email">Email:  </label>
           <input
             type="email"
             id="email"
@@ -45,6 +51,7 @@ const Register = ({ account }) => {
             onChange={handleEmailChange}
             required
           />
+          <br></br><br></br>
         </div>
         <button type="submit">Register</button>
       </form>
