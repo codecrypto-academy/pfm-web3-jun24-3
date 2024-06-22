@@ -28,7 +28,7 @@ const Register = ({ account }) => {
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="address">Connected Address:  </label>
-          <input type="text" id="address" value={account || ''} readOnly />
+          <input type="text" id="address" value={account} readOnly />
           <br></br><br></br>
         </div>
         <div>

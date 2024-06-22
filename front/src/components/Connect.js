@@ -14,10 +14,14 @@ function Connect() {
       setAccount(result.account);
       const balance = await getBalance(result.account, result.provider);
       setBalance(balance);
-      navigate('/register'); // Navigate to the Register page
+      // navigate('/register'); // Navigate to the Register page
     } else {
       console.error("Failed to connect wallet");
     }
+  };
+
+  const handleNavigate = () => {
+    navigate('/register');
   };
 
   return (
@@ -29,11 +33,9 @@ function Connect() {
       ) : (
         <div>
           <p>Connected Account: {account}</p>
-          {/* <p>Balance: {balance !== null ? `${balance} ETH` : "Loading balance..."}</p> */}
+          <p>Balance: {balance !== null ? `${balance} ETH` : "Loading balance..."}</p>
           <nav>
-            <Link to="/">Home</Link>
-            <Link to="/about">About</Link>
-            <Link to="/connect">Connect</Link>
+          <button onClick={handleNavigate}>Registrarse</button>
           </nav>
         </div>
       )}
