@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import Home from './components/Home';
 import About from './components/About';
 import Connect from './components/Connect';
-import Register from './components/Register'; // Import Register component
+import Register from './components/Register'; 
 
 import './App.css';
 import { getAccount, getBalance } from './metamask';
@@ -30,7 +30,6 @@ function App() {
         <Link to="/">Home - </Link>
         <Link to="/about">About - </Link>
         <Link to="/connect">Connect</Link>
-        {account && <Link to="/register">Register</Link>}
       </nav>
       <Routes>
         <Route path="/about" element={<About />} />
