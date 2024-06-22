@@ -1,7 +1,14 @@
 # TFM W3ETH G3
 
-## FRONT
+## Pre-Requisites
 
+🟡 Node version 20
+``` 
+nvm install 20
+nvm use 20
+```
+
+## FRONT
 
 ```sh
 cd front

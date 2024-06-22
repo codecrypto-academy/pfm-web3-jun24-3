@@ -38,6 +38,19 @@ button:hover {
   background-color: #21a1f1;
 }
 
+button.register-button {
+  background-color: #007bff; /* Default background color */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease; /* Smooth transition */
+}
+
+button.register-button:hover {
+  background-color: #0056b3; /* Background color on hover */
+}
+
 .App-link {
   color: #61dafb;
 }
