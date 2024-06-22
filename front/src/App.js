@@ -1,8 +1,13 @@
+// src/App.js
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
-import { getAccount, getBalance } from './metamask';
+import Home from './components/Home';
+import About from './components/About';
+import Connect from './components/Connect';
+import Register from './components/Register'; // Import Register component
+
 import './App.css';
-import Register from './components/Register';
+import { getAccount, getBalance } from './metamask';
 
 function App() {
   const [account, setAccount] = useState(null);
@@ -20,31 +25,20 @@ function App() {
   };
 
   return (
-    <Router>
-      <div className="App">
-        <header className="App-header">
-          <h1>MetaMask Integration with React</h1>
-          {!account ? (
-            <button onClick={handleConnectWallet}>Connect Wallet</button>
-          ) : (
-            <div>
-              <p>Connected Account: {account}</p>
-              <p>Balance: {balance !== null ? `${balance} ETH` : "Loading balance..."}</p>
-              {/* Show Register link only when the wallet is connected */}
-              <nav>
-                <Link to="/register">
-                  <button className="register-button">Registro de Nuevo Usuario</button>
-                </Link>
-              </nav>
-            </div>
-          )}
-        </header>
-        <Routes>
-          {/* Define routes here */}
-          <Route path="/register" element={<Register account={account} />} />
-        </Routes>
-      </div>
-    </Router>
+    <div className="App">
+      <nav>
+        <Link to="/">Home - </Link>
+        <Link to="/about">About - </Link>
+        <Link to="/connect">Connect</Link>
+        {account && <Link to="/register">Register</Link>}
+      </nav>
+      <Routes>
+        <Route path="/about" element={<About />} />
+        <Route path="/connect" element={<Connect />} />
+        <Route path="/" element={<Home />} />
+        <Route path="/register" element={<Register account={account} />} /> {/* Register route */}
+      </Routes>
+    </div>
   );
 }
 
