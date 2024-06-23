@@ -1,20 +1,16 @@
-// src/components/Connect.js
-import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { getAccount, getBalance } from '../metamask';
 
-function Connect() {
-  const [account, setAccount] = useState(null);
-  const [balance, setBalance] = useState(null);
+const Connect = ({ account, setAccount, balance, setBalance }) => { // Changed to destructuring props
   const navigate = useNavigate();
 
   const handleConnectWallet = async () => {
     const result = await getAccount();
     if (result) {
       setAccount(result.account);
-      const balance = await getBalance(result.account, result.provider);
-      setBalance(balance);
-      // navigate('/register'); // Navigate to the Register page
+      setBalance(await getBalance(result.account, result.provider));
+      //navigate('/register'); // Uncommented to navigate after connection
     } else {
       console.error("Failed to connect wallet");
     }
@@ -35,7 +31,7 @@ function Connect() {
           <p>Connected Account: {account}</p>
           <p>Balance: {balance !== null ? `${balance} ETH` : "Loading balance..."}</p>
           <nav>
-          <button onClick={handleNavigate}>Registrarse</button>
+            <button onClick={handleNavigate}>Registrarse</button>
           </nav>
         </div>
       )}

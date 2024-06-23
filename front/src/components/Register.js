@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-// import { getAccount, getBalance } from './metamask';
 
 
 const Register = ({ account }) => {
@@ -34,7 +33,7 @@ const Register = ({ account }) => {
         <div>
           <label htmlFor="role">Tipo de Actor:  </label>
           <select id="role" value={role} onChange={handleRoleChange}>
-            <option value="">Seleecione uno</option>
+            <option value="">Selecione uno</option>
             <option value="agricultor">Agricultor</option>
             <option value="bodegero">Bodegero</option>
             <option value="transportista">Transportista</option>
