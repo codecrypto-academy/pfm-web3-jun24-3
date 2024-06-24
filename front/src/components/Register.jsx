@@ -22,9 +22,9 @@ const Register = ({ account }) => {
   };
 
   return (
-    <div>
+    <div className='bg-white text-black text-center py-4 '>
       <h2>Register</h2>
-      <form onSubmit={handleSubmit}>
+      <form className='bg-light border p-2' onSubmit={handleSubmit}>
         <div>
           <label htmlFor="address">Connected Address:  </label>
           <input type="text" id="address" value={account} readOnly />
@@ -52,7 +52,7 @@ const Register = ({ account }) => {
           />
           <br></br><br></br>
         </div>
-        <button type="submit">Register</button>
+        <button className='btn btn-dark' type="submit">Register</button>
       </form>
     </div>
   );
