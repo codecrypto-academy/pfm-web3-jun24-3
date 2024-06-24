@@ -4,6 +4,7 @@
 help:
 	@echo "Usage:"
 	@echo "  make deploy_track [ARGS=...]"
+	@echo "  make deploy_user_management [ARGS=...]"
 	
 test:; forge test
 
@@ -17,3 +18,6 @@ endif
 
 deploy_track:
 	@forge script script/DeployTrack.s.sol:DeployTrack $(NETWORK_ARGS)
+
+deploy_user_management:
+	@forge script script/DeployUserManagement.s.sol:DeployUserManagement $(NETWORK_ARGS)
