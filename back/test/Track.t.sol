@@ -3,13 +3,15 @@ pragma solidity 0.8.26;
 
 import {Test, console} from "forge-std/Test.sol";
 import {Track} from "../src/Track.sol";
+import {DeployTrack} from "../script/DeployTrack.s.sol";
 
 contract TrackTest is Test {
     Track public track;
 
     //Contract state Initialization for each test execution
     function setUp() external {
-        track = new Track();
+        DeployTrack deployTrack = new DeployTrack();
+        track = deployTrack.run();
         track.setTrackId(0);
     }
 
@@ -24,13 +26,21 @@ contract TrackTest is Test {
     }
 
     function test_SetOwnerAsOwner() public {
-        track.setOwner(address(1));
-        assertEq(track.owner(), address(1));
+        address newOwner = address(1);
+
+        vm.prank(track.owner()); // Simulate as if the current owner is calling
+        track.setOwner(newOwner);
+
+        assertEq(track.owner(), newOwner);
     }
 
     function test_SetUserAsOwner() public {
-        track.setUser(address(2));
-        assertEq(track.user(), address(2));
+        address newUser = address(2);
+
+        vm.prank(track.owner()); // Simulate as if the current owner is calling
+        track.setUser(newUser);
+
+        assertEq(track.user(), newUser);
     }
 
     function test_SetOwnerAsNoOwner() public {
