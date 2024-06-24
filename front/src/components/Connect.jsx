@@ -21,20 +21,22 @@ const Connect = ({ account, setAccount, balance, setBalance }) => { // Changed t
   };
 
   return (
-    <div>
-      <h2>Connect</h2>
-      <h1>MetaMask Integration with React</h1>
+    <div className='bg-white text-black text-center py-4 '>
+      <div className='bg-light border p-2'>
       {!account ? (
-        <button onClick={handleConnectWallet}>Connect Wallet</button>
+        <button className='btn btn-dark' onClick={handleConnectWallet}>Connect Wallet</button>
       ) : (
         <div>
-          <p>Connected Account: {account}</p>
-          <p>Balance: {balance !== null ? `${balance} ETH` : "Loading balance..."}</p>
+          <h5>Connected Account</h5>
+          <h6>{account}</h6>
+          <h5>Balance: </h5>
+          <h6>{balance !== null ? `${balance} ETH` : "Loading balance..."}</h6>
           <nav>
-            <button onClick={handleNavigate}>Registrarse</button>
+            <button className='btn btn-dark' onClick={handleNavigate}>Registrarse</button>
           </nav>
         </div>
       )}
+      </div>
     </div>
   );
 }
