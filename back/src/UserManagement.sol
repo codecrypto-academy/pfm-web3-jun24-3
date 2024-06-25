@@ -6,7 +6,8 @@ contract UserManagement {
         Agricultor,
         Bodegero,
         Transportista,
-        Vendedor
+        Vendedor,
+        Pendiente_Asignacion_Rol
     }
     address public owner;
 
@@ -30,15 +31,21 @@ contract UserManagement {
         owner = _owner;
     }
 
-    function registerUser(
-        address _user,
-        Role _role,
-        string memory _email
-    ) public {
-        users[_user] = UserInfo(_role, _email);
+    function registerUser(address _user, string memory _email) public {
+        users[_user] = UserInfo(Role.Pendiente_Asignacion_Rol, _email);
     }
 
     function getUserInfo(address _user) public view returns (UserInfo memory) {
         return users[_user];
+    }
+
+    function setUserRole(address _user, Role _role) public {
+        //Only owner can set user role
+        require(msg.sender == owner, "Error: Only owner can set user role");
+        if (_role == Role.Pendiente_Asignacion_Rol) {
+            revert("Error: Invalid role");
+        }
+
+        users[_user].role = _role;
     }
 }

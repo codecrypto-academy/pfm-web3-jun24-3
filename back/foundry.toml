@@ -1,4 +1,6 @@
 [profile.default]
+optimize = true
+optimizer_runs = 200
 src = "src"
 out = "out"
 libs = ["lib"]
