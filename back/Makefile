@@ -5,10 +5,18 @@ help:
 	@echo "Usage:"
 	@echo "  make deploy_track [ARGS=...]"
 	@echo "  make deploy_user_management [ARGS=...]"
-	
-test:; forge test
+	@echo "  make clean"
+	@echo "  make test"
+	@echo "  make build"
+	@echo "  make coverage"
 
-build:; forge build
+clean:; @forge clean
+
+test:; @forge test
+
+build:; @forge build
+
+coverage:; @forge coverage
 
 NETWORK_ARGS := --rpc-url http://127.0.0.1:8545 --account anvilkey --broadcast
 # if --network sepolia is used, then use sepolia stuff, otherwise use the anvil stuff

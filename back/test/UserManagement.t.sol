@@ -31,10 +31,10 @@ contract UserManagementTest is Test {
 
     function test_RegisterUser() public {
         address user = address(1);
-        UserManagement.Role role = UserManagement.Role.Agricultor;
+        UserManagement.Role role = UserManagement.Role.Pendiente_Asignacion_Rol;
         string memory email = "user@mail.com";
 
-        userManagement.registerUser(user, role, email);
+        userManagement.registerUser(user, email);
 
         UserManagement.UserInfo memory userInfo = userManagement.getUserInfo(
             user
@@ -42,5 +42,26 @@ contract UserManagementTest is Test {
 
         assertEq(uint(userInfo.role), uint(role));
         assertEq(userInfo.email, email);
+    }
+
+    function test_SetUserRole() public {
+        address user = address(1);
+        UserManagement.Role role = UserManagement.Role.Agricultor;
+
+        vm.prank(userManagement.owner()); // Simulate as if the current owner is calling
+        userManagement.setUserRole(user, role);
+
+        UserManagement.UserInfo memory userInfo = userManagement.getUserInfo(
+            user
+        );
+
+        assertEq(uint(userInfo.role), uint(role));
+    }
+
+    function test_SetUserRoleAsNoOwner() public {
+        vm.expectRevert(bytes("Error: Only owner can set user role"));
+        vm.startPrank(address(1));
+        userManagement.setUserRole(address(3), UserManagement.Role.Agricultor);
+        vm.stopPrank();
     }
 }
