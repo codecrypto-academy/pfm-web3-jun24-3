@@ -1,10 +1,34 @@
 //SPDX-License-Identifier: MIT
-pragma solidity 0.8.26;
+pragma solidity ^0.8.18;
 
 contract Track {
     address public owner;
     address public user;
     uint256 public trackId;
+
+
+    /// @notice Structure to represent each tracking step
+    struct TrackItem {
+        uint256 trackId;
+        uint256 trackItemId;
+        string date;
+        string location;
+        string quantity;
+        string itemType;
+        string name;
+        address origin;
+        address owner;
+        string status;
+        string value;
+        bytes32 itemHash;
+    }
+
+    /// @notice Mapping from trackId to a list of TrackItems
+    mapping(uint256 => TrackItem[]) public tracks;
+
+    /// @notice Event emitted when a new TrackItem is added
+    event TrackItemAdded(uint256 indexed trackId, uint256 indexed trackItemId, string status, address owner);
+
 
     constructor() {
         owner = msg.sender;
@@ -25,7 +49,42 @@ contract Track {
         user = _user;
     }
 
-    function setTrackId(uint256 _trackId) public {
-        trackId = _trackId;
+    function addTrackItem(
+        uint256 _trackId,
+        string memory _date,
+        string memory _location,
+        string memory _quantity,
+        string memory _itemType,
+        string memory _name,
+        address _origin,
+        address _owner,
+        string memory _status,
+        string memory _value,
+        bytes32 _itemHash
+    ) public {
+        uint256 trackItemId = tracks[_trackId].length + 1;
+
+        TrackItem memory newItem = TrackItem({
+            trackId: _trackId,
+            trackItemId: trackItemId,
+            date: _date,
+            location: _location,
+            quantity: _quantity,
+            itemType: _itemType,
+            name: _name,
+            origin: _origin,
+            owner: _owner,
+            status: _status,
+            value: _value,
+            itemHash: _itemHash
+        });
+
+        tracks[_trackId].push(newItem);
+
+        emit TrackItemAdded(_trackId, trackItemId, _status, _owner);
+    }
+
+    function getTrackItems(uint256 _trackId) public view returns (TrackItem[] memory) {
+        return tracks[_trackId];
     }
 }
