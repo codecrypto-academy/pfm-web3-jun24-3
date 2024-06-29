@@ -74,4 +74,17 @@ contract UserManagementTest is Test {
         userManagement.setUserRole(address(3), UserManagement.Role.Agricultor);
         vm.stopPrank();
     }
+
+    function test_GetRoles() public view {
+        UserManagement.Role[] memory roles = userManagement.getRoles();
+
+        assertEq(uint(roles[0]), uint(UserManagement.Role.Agricultor));
+        assertEq(uint(roles[1]), uint(UserManagement.Role.Bodegero));
+        assertEq(uint(roles[2]), uint(UserManagement.Role.Transportista));
+        assertEq(uint(roles[3]), uint(UserManagement.Role.Vendedor));
+        assertEq(
+            uint(roles[4]),
+            uint(UserManagement.Role.Pendiente_Asignacion_Rol)
+        );
+    }
 }

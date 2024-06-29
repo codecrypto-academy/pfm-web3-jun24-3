@@ -52,4 +52,14 @@ contract UserManagement {
 
         users[_user].role = _role;
     }
+
+    function getRoles() public pure returns (Role[] memory) {
+        Role[] memory roles = new Role[](5);
+        roles[0] = Role.Agricultor;
+        roles[1] = Role.Bodegero;
+        roles[2] = Role.Transportista;
+        roles[3] = Role.Vendedor;
+        roles[4] = Role.Pendiente_Asignacion_Rol;
+        return roles;
+    }
 }
