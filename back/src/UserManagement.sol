@@ -14,6 +14,7 @@ contract UserManagement {
     struct UserInfo {
         Role role;
         string email;
+        bool isRegistered;
     }
 
     mapping(address => UserInfo) public users;
@@ -32,7 +33,10 @@ contract UserManagement {
     }
 
     function registerUser(address _user, string memory _email) public {
-        users[_user] = UserInfo(Role.Pendiente_Asignacion_Rol, _email);
+        if(users[_user].isRegistered) {
+            revert("Error: User already registered");
+        }
+        users[_user] = UserInfo(Role.Pendiente_Asignacion_Rol, _email, true);
     }
 
     function getUserInfo(address _user) public view returns (UserInfo memory) {
