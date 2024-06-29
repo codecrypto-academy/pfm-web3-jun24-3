@@ -42,6 +42,16 @@ contract UserManagementTest is Test {
 
         assertEq(uint(userInfo.role), uint(role));
         assertEq(userInfo.email, email);
+        assertEq(userInfo.isRegistered, true);
+    }
+
+    function test_RegisterUserTwice() public {
+        address user = address(1);
+        string memory email = "user@mail.com";
+
+        userManagement.registerUser(user, email);
+        vm.expectRevert(bytes("Error: User already registered"));
+        userManagement.registerUser(user, email);
     }
 
     function test_SetUserRole() public {
