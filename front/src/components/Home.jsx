@@ -27,6 +27,11 @@ function Home() {
 							Connect
 							</Link>
 						</li>
+						<li className='nav-item'  onClick={() => handleItemClick('admin')}>
+							<Link className={selectedItem === 'admin' ? 'nav-link active' : 'nav-link'} to={'/admin'}>
+							Admin
+							</Link>
+						</li>
 						<li className='nav-item'  onClick={() => handleItemClick('agricultor')}>
 							<Link className={selectedItem === 'agricultor' ? 'nav-link active' : 'nav-link'} to={'/agricultor'}>
 							Agricultor
