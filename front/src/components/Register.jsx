@@ -1,24 +1,34 @@
 import React, { useState } from 'react';
+import { getAccount } from '../metamask';
+import { ethers } from 'ethers';
+import userManagementContractABI from '../abi/UserManagementABI.json';
+
+// Anvil contract address
+const userManagementContractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
+
 
 
 const Register = ({ account }) => {
-  const [role, setRole] = useState('');
   const [email, setEmail] = useState('');
-
-  const handleRoleChange = (e) => {
-    setRole(e.target.value);
-  };
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
-    // Handle form submission logic
-    console.log('Role:', role);
-    console.log('Email:', email);
-    console.log('Account:', account);
+    var { account, provider } = await getAccount();
+    
+    const signer = provider.getSigner();
+    const contract = new ethers.Contract(userManagementContractAddress, userManagementContractABI, signer);
+    try{
+    const tx = await contract.registerUser(account, email, {from: account});
+    await tx.wait();
+    console.log('Hash: ', tx.hash);
+    } catch (err) {
+      console.error('Error: ', err);
+    }
+    
   };
 
   return (
@@ -28,17 +38,6 @@ const Register = ({ account }) => {
         <div>
           <label htmlFor="address">Connected Address:  </label>
           <input type="text" id="address" value={account} readOnly />
-          <br></br><br></br>
-        </div>
-        <div>
-          <label htmlFor="role">Tipo de Actor:  </label>
-          <select id="role" value={role} onChange={handleRoleChange}>
-            <option value="">Selecione uno</option>
-            <option value="agricultor">Agricultor</option>
-            <option value="bodegero">Bodegero</option>
-            <option value="transportista">Transportista</option>
-            <option value="vendedor">Vendedor</option>
-          </select>
           <br></br><br></br>
         </div>
         <div>
