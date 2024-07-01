@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route} from 'react-router-dom';
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 
 // Components
@@ -19,27 +19,23 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
-
-  const [account, setAccount] = useState(null);
-  const [balance, setBalance] = useState(null);
-
   return (
     <Router>
-        <Routes>
-          <Route path="/" element={<Home />}>
-            <Route path="/about" element={<About />} />
-            <Route path='/privacy' element={<Privacy />} />
-            <Route path='/terms' element={<Terms />} />
-            <Route path='/admin' element={<Admin />} />
-            <Route path='/agricultor' element={<Agricultor />} />
-            <Route path='/bodeguero' element={<Bodeguero />} />
-            <Route path='/transportista' element={<Transportista />} />
-            <Route path='/vendedor' element={<Vendedor />} />
-            <Route path="/connect" element={<Connect account={account} setAccount={setAccount} balance={balance} setBalance={setBalance} />} />
-            <Route path="/register" element={<Register account={account} />} />
-            <Route path='*' element={<h3>INVALID ROUTE</h3>} />
-          </Route>
-        </Routes>
+      <Routes>
+        <Route path="/" element={<Home />}>
+          <Route path="/about" element={<About />} />
+          <Route path='/privacy' element={<Privacy />} />
+          <Route path='/terms' element={<Terms />} />
+          <Route path='/admin' element={<Admin />} />
+          <Route path='/agricultor' element={<Agricultor />} />
+          <Route path='/bodeguero' element={<Bodeguero />} />
+          <Route path='/transportista' element={<Transportista />} />
+          <Route path='/vendedor' element={<Vendedor />} />
+          <Route path="/connect" element={<Connect />} />
+          <Route path="/register" element={<Register />} />
+          <Route path='*' element={<h3>INVALID ROUTE</h3>} />
+        </Route>
+      </Routes>
     </Router>
   );
 }
