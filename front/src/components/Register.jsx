@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Form, Button } from 'react-bootstrap';
 import { getAccount } from '../metamask';
 import { ethers } from 'ethers';
 import userManagementContractABI from '../abi/UserManagementABI.json';
@@ -33,26 +34,31 @@ const Register = ({ account }) => {
 
   return (
     <div className='bg-white text-black text-center py-4 '>
-      <h2>Register</h2>
-      <form className='bg-light border p-2' onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="address">Connected Address:  </label>
-          <input type="text" id="address" value={account} readOnly />
-          <br></br><br></br>
-        </div>
-        <div>
-          <label htmlFor="email">Email:  </label>
-          <input
+      <h2>REGISTER FORM</h2>
+      <Form onSubmit={handleSubmit} className='bg-light border p-2'>
+        <Form.Group controlId="formAddress">
+          <Form.Label className="text-sm-right text-left">Connected Address:</Form.Label>
+          <Form.Control
+            type="text"
+            value={account}
+          />
+        </Form.Group>
+
+        <Form.Group controlId="formEmail">
+          <Form.Label>Email address</Form.Label>
+          <Form.Control
             type="email"
-            id="email"
+            placeholder="Enter your email"
             value={email}
             onChange={handleEmailChange}
-            required
           />
-          <br></br><br></br>
-        </div>
-        <button className='btn btn-dark' type="submit">Register</button>
-      </form>
+        </Form.Group>
+        <p></p>
+        <Button className='btn btn-dark' type="submit">
+          Register
+        </Button>
+      </Form>
+     
     </div>
   );
 };

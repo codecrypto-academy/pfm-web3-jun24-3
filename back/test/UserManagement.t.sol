@@ -82,9 +82,21 @@ contract UserManagementTest is Test {
         assertEq(uint(roles[1]), uint(UserManagement.Role.Bodegero));
         assertEq(uint(roles[2]), uint(UserManagement.Role.Transportista));
         assertEq(uint(roles[3]), uint(UserManagement.Role.Vendedor));
-        assertEq(
-            uint(roles[4]),
-            uint(UserManagement.Role.Pendiente_Asignacion_Rol)
-        );
+        assertEq(uint(roles[4]), uint(UserManagement.Role.Admin));
+        assertEq(uint(roles[5]), uint(UserManagement.Role.Cliente));
+        assertEq(uint(roles[6]), uint(UserManagement.Role.Pendiente_Asignacion_Rol));
     }
+
+    function test_GetRolesAsString() public view {
+        string[] memory roles = userManagement.getRolesAsString();
+
+        assertEq(roles[0], "Agricultor");
+        assertEq(roles[1], "Bodegero");
+        assertEq(roles[2], "Transportista");
+        assertEq(roles[3], "Vendedor");
+        assertEq(roles[4], "Admin");
+        assertEq(roles[5], "Cliente");
+        assertEq(roles[6], "Pendiente_Asignacion_Rol");
+    }
+
 }
