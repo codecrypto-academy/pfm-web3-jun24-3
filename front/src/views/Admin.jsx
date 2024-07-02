@@ -1,11 +1,7 @@
 import React, { useEffect } from 'react';
 import { ethers } from 'ethers';
 import { getAccount } from '../metamask';
-import userManagementContractABI from '../abi/UserManagementABI.json';
-import { useWallet } from '../contexts/WalletContext';
-
-// Anvil contract address
-const userManagementContractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
+import { useWallet, userManagementContractAddress, userManagementContractABI } from '../contexts/WalletContext';
 
 function Admin() {
 	const { users, setUsers, setRole, setProvider, contract, setContract } = useWallet();
@@ -27,6 +23,7 @@ function Admin() {
 
 			try {
 				const addresses = await contract.getAllUsers();
+				console.log(addresses);
 				const usersInfo = await Promise.all(addresses.map(async (address) => {
 					const userInfo = await contract.getUserInfo(address);
 					const rolesString = await contract.getRolesAsString();

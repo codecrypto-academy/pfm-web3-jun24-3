@@ -2,11 +2,7 @@ import React, { useState } from 'react';
 import { Form, Button } from 'react-bootstrap';
 import { getAccount } from '../metamask';
 import { ethers } from 'ethers';
-import userManagementContractABI from '../abi/UserManagementABI.json';
-import { useWallet } from '../contexts/WalletContext';
-
-// Anvil contract address
-const userManagementContractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
+import { useWallet, userManagementContractAddress, userManagementContractABI } from '../contexts/WalletContext';
 
 
 const Register = () => {
