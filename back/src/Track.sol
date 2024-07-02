@@ -1,13 +1,19 @@
-//SPDX-License-Identifier: MIT
-pragma solidity ^0.8.18;
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.26;
+
+import "./UserManagement.sol";
 
 contract Track {
     address public owner;
-    address public user;
-    uint256 public trackId;
+    UserManagement userManagement;
 
+    constructor(address _userManagementAddress) {
+        owner = msg.sender;
+        userManagement = UserManagement(_userManagementAddress);
+    }
 
-    /// @notice Structure to represent each tracking step
+    enum Status { Disponible, Procesando, Embotellado, PedidoRealizado, Entregado, EnRuta }
+
     struct TrackItem {
         uint256 trackId;
         uint256 trackItemId;
@@ -18,35 +24,22 @@ contract Track {
         string name;
         address origin;
         address owner;
-        string status;
+        Status status;
         string value;
         bytes32 itemHash;
     }
 
-    /// @notice Mapping from trackId to a list of TrackItems
     mapping(uint256 => TrackItem[]) public tracks;
 
-    /// @notice Event emitted when a new TrackItem is added
-    event TrackItemAdded(uint256 indexed trackId, uint256 indexed trackItemId, string status, address owner);
+    event TrackItemAdded(uint256 indexed trackId, uint256 indexed trackItemId, Status status, address owner);
 
-
-    constructor() {
-        owner = msg.sender;
+    modifier onlyOwner() {
+        require(msg.sender == owner, "Error: Only owner can perform this action");
+        _;
     }
 
-    function setOwner(address _owner) public {
-        //Only current owner can set new owner
-        require(
-            msg.sender == owner,
-            "Error: Only current owner can set new owner"
-        );
+    function setOwner(address _owner) public onlyOwner {
         owner = _owner;
-    }
-
-    function setUser(address _user) public {
-        //Only owner can set user
-        require(msg.sender == owner, "Error: Only current owner can set user");
-        user = _user;
     }
 
     function addTrackItem(
@@ -58,10 +51,16 @@ contract Track {
         string memory _name,
         address _origin,
         address _owner,
-        string memory _status,
+        Status _status,
         string memory _value,
         bytes32 _itemHash
     ) public {
+        UserManagement.UserInfo memory userInfo = userManagement.getUserInfo(msg.sender);
+        require(
+            canAddItem(userInfo.role, _status),
+            "Error: Unauthorized role for this status"
+        );
+
         uint256 trackItemId = tracks[_trackId].length + 1;
 
         TrackItem memory newItem = TrackItem({
@@ -82,6 +81,21 @@ contract Track {
         tracks[_trackId].push(newItem);
 
         emit TrackItemAdded(_trackId, trackItemId, _status, _owner);
+    }
+
+    function canAddItem(UserManagement.Role role, Status status) internal pure returns (bool) {
+        if (status == Status.Disponible && role == UserManagement.Role.Agricultor) {
+            return true;
+        } else if ((status == Status.Procesando || status == Status.Embotellado) && role == UserManagement.Role.Bodegero) {
+            return true;
+        } else if (status == Status.EnRuta && role == UserManagement.Role.Transportista) {
+            return true;
+        } else if (status == Status.PedidoRealizado && role == UserManagement.Role.Vendedor) {
+            return true;
+        } else if (status == Status.Entregado && (role == UserManagement.Role.Vendedor || role == UserManagement.Role.Cliente)) {
+            return true;
+        }
+        return false;
     }
 
     function getTrackItems(uint256 _trackId) public view returns (TrackItem[] memory) {
