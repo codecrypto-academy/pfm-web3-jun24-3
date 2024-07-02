@@ -9,7 +9,7 @@ contract UserManagement {
         Vendedor,
         Admin,
         Cliente,
-        Pendiente_Asignacion_Rol 
+        Pendiente_Asignacion_Rol
     }
     address public owner;
 
@@ -37,7 +37,7 @@ contract UserManagement {
     }
 
     function registerUser(address _user, string memory _email) public {
-        if(users[_user].isRegistered) {
+        if (users[_user].isRegistered) {
             revert("Error: User already registered");
         }
         users[_user] = UserInfo(Role.Pendiente_Asignacion_Rol, _email, true);
@@ -48,14 +48,14 @@ contract UserManagement {
         return users[_user];
     }
 
-    function setUserRole(address _user, Role _role) public {
+    function setUserRole(address _user, uint _role) public {
         //Only owner can set user role
         require(msg.sender == owner, "Error: Only owner can set user role");
-        if (_role == Role.Pendiente_Asignacion_Rol) {
+        if (Role(_role) == Role.Pendiente_Asignacion_Rol) {
             revert("Error: Invalid role");
         }
 
-        users[_user].role = _role;
+        users[_user].role = Role(_role);
     }
 
     function getAllUsers() public view returns (address[] memory) {
@@ -93,8 +93,8 @@ contract UserManagement {
         if (_role == Role.Vendedor) return "Vendedor";
         if (_role == Role.Admin) return "Admin";
         if (_role == Role.Cliente) return "Cliente";
-        if (_role == Role.Pendiente_Asignacion_Rol) return "Pendiente_Asignacion_Rol";
+        if (_role == Role.Pendiente_Asignacion_Rol)
+            return "Pendiente_Asignacion_Rol";
         return "";
     }
-
 }
