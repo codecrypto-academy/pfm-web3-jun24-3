@@ -2,34 +2,31 @@ import React, { useState } from 'react';
 import { Form, Button } from 'react-bootstrap';
 import { getAccount } from '../metamask';
 import { ethers } from 'ethers';
-import userManagementContractABI from '../abi/UserManagementABI.json';
-
-// Anvil contract address
-const userManagementContractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
+import { useWallet, userManagementContractAddress, userManagementContractABI } from '../contexts/WalletContext';
 
 
-
-const Register = ({ account }) => {
+const Register = () => {
+  const { account } = useWallet();
   const [email, setEmail] = useState('');
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
   };
 
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     var { account, provider } = await getAccount();
-    
+
     const signer = provider.getSigner();
     const contract = new ethers.Contract(userManagementContractAddress, userManagementContractABI, signer);
-    try{
-    const tx = await contract.registerUser(account, email, {from: account});
-    await tx.wait();
-    console.log('Hash: ', tx.hash);
+    try {
+      const tx = await contract.registerUser(account, email, { from: account });
+      await tx.wait();
+      console.log('Hash: ', tx.hash);
     } catch (err) {
       console.error('Error: ', err);
     }
-    
+
   };
 
   return (
@@ -40,7 +37,8 @@ const Register = ({ account }) => {
           <Form.Label className="text-sm-right text-left">Connected Address:</Form.Label>
           <Form.Control
             type="text"
-            value={account}
+            value={account || ''}
+            readOnly
           />
         </Form.Group>
 
@@ -58,7 +56,7 @@ const Register = ({ account }) => {
           Register
         </Button>
       </Form>
-     
+
     </div>
   );
 };

@@ -33,5 +33,19 @@ TBD
 Al the information related to front and back deployment could be find ind **README** file inside each corresponding folder
 
 
+## UTILS
+In the `./utils` directory, there is a script `generate_abi.js` that processes the contract name (without the `.sol` extension) to generate the ABI from Foundry's output directory. Ensure you build the foundry project beforehand. Then, move this generated json to `front/src/abi` directory.
+
+To execute the `.js` scripts enter to that directory:
+```bash
+cd utils
+```
+
+execute the script
+```bash
+node generate_abi.js <contract_name_without_sol_extension>
+```
+
+
 
 
