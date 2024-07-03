@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { getAccount, getBalance } from '../metamask';
+import { getAccount, getBalance } from '../hooks/metamask';
 import { useWallet } from '../contexts/WalletContext';
 
 const Connect = () => {

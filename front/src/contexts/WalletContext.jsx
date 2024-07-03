@@ -1,4 +1,6 @@
 import React, { createContext, useContext, useState } from 'react';
+import useMetaMask from '../hooks/useMetaMask';
+
 export { default as userManagementContractABI } from '../abi/UserManagementABI.json';
 
 const WalletContext = createContext();
@@ -8,7 +10,6 @@ export const userManagementContractAddress = "0xDc64a140Aa3E981100a9becA4E685f96
 
 
 
-export const useWallet = () => useContext(WalletContext);
 
 export const WalletProvider = ({ children }) => {
     const [account, setAccount] = useState(null);
@@ -18,9 +19,15 @@ export const WalletProvider = ({ children }) => {
     const [provider, setProvider] = useState(null);
     const [contract, setContract] = useState(null);
 
+    const metaMask = useMetaMask();
+
     return (
-        <WalletContext.Provider value={{ account, setAccount, balance, setBalance, users, setUsers, role, setRole, provider, setProvider, contract, setContract }}>
+        <WalletContext.Provider value={metaMask}>
             {children}
         </WalletContext.Provider>
     );
+};
+
+export const useWallet = () => {
+    return useContext(WalletContext);
 };

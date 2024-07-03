@@ -32,9 +32,9 @@ function Home() {
 				<div className='container'>
 					<div className='collapse navbar-collapse' id='navbarNav'>
 						<ul className='navbar-nav'>
-							<li className='nav-item' onClick={() => handleItemClick('connect')}>
-								<Link className={selectedItem === 'connect' ? 'nav-link active' : 'nav-link'} to={'/connect'}>
-									Connect
+							<li className='nav-item' onClick={() => handleItemClick('register')}>
+								<Link className={selectedItem === 'register' ? 'nav-link active' : 'nav-link'} to={'/register'}>
+									Register
 								</Link>
 							</li>
 							<li className='nav-item' onClick={() => handleItemClick('admin')}>
