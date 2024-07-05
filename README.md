@@ -8,14 +8,19 @@ nvm install 20
 nvm use 20
 ```
 
+## BACK
+
+curl -L https://foundry.paradigm.xyz | bash
+
+
+
 ## FRONT
 
 ```sh
 cd front
-
-npm install ethers@5.7.2
-
+npm install 
 ```
+
 Note for Devs: At that point was needed downgrade ethers to that version
 
 #### 🚂 Starting the front:
