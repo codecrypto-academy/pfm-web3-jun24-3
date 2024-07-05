@@ -14,6 +14,7 @@ import Bodeguero from './views/Bodeguero';          //View
 import Transportista from './views/Transportista';  //View
 import Vendedor from './views/Vendedor';            //View
 
+
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 

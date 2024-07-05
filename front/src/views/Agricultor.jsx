@@ -1,44 +1,66 @@
+import React, { useState } from 'react';
 
-function Agricultor() {
+const AgricultorTrackingForm = () => {
+	const [formData, setFormData] = useState({
+		date: '',
+		location: '',
+		quantity: '',
+		info: ''
+	});
+
+	const [isSubmitted, setIsSubmitted] = useState(false); // Estado adicional para el mensaje de confirmación
+
+	const handleChange = (e) => {
+		setFormData({
+			...formData,
+			[e.target.name]: e.target.value
+		});
+	};
+
+	const handleSubmit = (e) => {
+		e.preventDefault();
+		console.log(formData);
+		setIsSubmitted(true); // Mostrar el mensaje de confirmación
+	};
+
+	const labelStyle = {
+		display: 'inline-block',
+		width: '250px',
+		marginRight: '10px'
+	};
 
 	return (
-		<div className='bg-white text-black text-center py-4 '>
-			<div className='bg-light border p-2'>
-				<h3>AGRICULTOR</h3>
-				<table className="table table-bordered">
-					<thead>
-						<tr >
-							<th scope="col">Seleccion</th>
-							<th scope="col">Origen</th>
-							<th scope="col">Información</th>
-							<th scope="col">Cantidad</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td><input className="form-check-input" type="checkbox" value="" id="flexCheck1" /></td>
-							<td>Albacete</td>
-							<td>Uvas tipo 1</td>
-							<td>500 kg</td>
-						</tr>
-						<tr>
-							<td><input className="form-check-input" type="checkbox" value="" id="flexCheck2" /></td>
-							<td>Galicia</td>
-							<td>Uvas tipo2</td>
-							<td>300 kg</td>
-						</tr>
-						<tr>
-							<td><input className="form-check-input" type="checkbox" value="" id="flexCheck3" /></td>
-							<td>Andalucia</td>
-							<td>Uvas tipo 3</td>
-							<td>400 kg</td>
-						</tr>
-					</tbody>
-				</table>
-				<button className='btn btn-dark' id="storeSelected">Trazar</button>
-
-			</div>
+		<div>
+			{isSubmitted ? (
+				<h1 style={{ textAlign: 'center', fontSize: '24px', fontWeight: 'bold', color: '#000000', marginTop:'24px'}}>🎉 Registro completado 🎉</h1>
+			) : (
+				<form onSubmit={handleSubmit}>
+					<div style={{ marginBottom: '20px' }}></div>
+					<h1 style={{ textAlign: 'center', fontSize: '24px', fontWeight: 'bold', color: '#000000', marginBottom: '20px' }}>✍🏻 Añadir Información al Track ✍🏻</h1>
+					<div style={{ marginBottom: '10px' }}>
+						<label style={labelStyle}>Fecha:</label>
+						<input type="date" name="date" value={formData.date} onChange={handleChange} required />
+					</div>
+					<div style={{ marginBottom: '10px' }}>
+						<label style={labelStyle}>Ubicación:</label>
+						<input type="text" name="location" value={formData.location} style={{ width: '300px' }} onChange={handleChange} required />
+					</div>
+					<div style={{ marginBottom: '10px' }}>
+						<label style={labelStyle}>Cantidad:</label>
+						<input type="number" name="quantity" value={formData.quantity} style={{ width: '75px' }} onChange={handleChange} required />
+					</div>
+					<div style={{ marginBottom: '10px' }}>
+						<label style={labelStyle}>Información Adicional:</label>
+						<input type="text" name="info" value={formData.info} style={{ width: '600px' }} onChange={handleChange} required />
+					</div>
+					<div style={{ marginBottom: '30px', justifyContent: 'center' }}></div>
+					<div style={{ display: 'flex', justifyContent: 'center' }}>
+						<button type="submit">Registrar</button>
+					</div>
+				</form>
+			)}
 		</div>
 	);
-}
-export default Agricultor;
+};
+
+export default AgricultorTrackingForm;
