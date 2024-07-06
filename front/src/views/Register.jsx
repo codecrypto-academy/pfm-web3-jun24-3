@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { Form, Button } from 'react-bootstrap';
-import { getAccount } from '../metamask';
 import { ethers } from 'ethers';
-import { useWallet, userManagementContractAddress, userManagementContractABI } from '../contexts/WalletContext';
-
+import { useAppContext  } from '../contexts/AppContext';
 
 const Register = () => {
-  const { account } = useWallet();
+
+  const { metaMaskHook, contractHook} = useAppContext();
+
   const [email, setEmail] = useState('');
 
   const handleEmailChange = (e) => {
@@ -15,16 +15,18 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    var { account, provider } = await getAccount();
 
-    const signer = provider.getSigner();
-    const contract = new ethers.Contract(userManagementContractAddress, userManagementContractABI, signer);
+    const contractUsers = new ethers.Contract(
+                                      contractHook.userManagementContractAddress, 
+                                      contractHook.userManagementContractABI, 
+                                      metaMaskHook.signer);
+
     try {
-      const tx = await contract.registerUser(account, email, { from: account });
+      const tx = await contractUsers.registerUser(metaMaskHook.account, email, { from: metaMaskHook.account });
       await tx.wait();
       console.log('Hash: ', tx.hash);
     } catch (err) {
-      console.error('Error: ', err);
+      console.error('Register Error: ', err);
     }
 
   };
@@ -37,7 +39,7 @@ const Register = () => {
           <Form.Label className="text-sm-right text-left">Connected Address:</Form.Label>
           <Form.Control
             type="text"
-            value={account || ''}
+            value={metaMaskHook.account || ''}
             readOnly
           />
         </Form.Group>

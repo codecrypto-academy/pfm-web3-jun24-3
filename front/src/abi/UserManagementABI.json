@@ -134,8 +134,8 @@
       },
       {
         "name": "_role",
-        "type": "uint8",
-        "internalType": "enum UserManagement.Role"
+        "type": "uint256",
+        "internalType": "uint256"
       }
     ],
     "outputs": [],

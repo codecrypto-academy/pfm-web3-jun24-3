@@ -7,12 +7,12 @@ import { Outlet, Link } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 
-import { useWallet, userManagementContractABI, userManagementContractAddress } from '../contexts/WalletContext';
+import { useAppContext, userManagementContractABI, userManagementContractAddress } from '../contexts/AppContext';
 
 function Home() {
 
 
-	const { account, role, setRole, contract } = useWallet();
+	const { account, role, setRole, contract } = useAppContext();
 	const [selectedItem, setSelectedItem] = useState(null);
 	const initRole = async () => {
 		if (!contract || !account) return;
@@ -32,9 +32,9 @@ function Home() {
 				<div className='container'>
 					<div className='collapse navbar-collapse' id='navbarNav'>
 						<ul className='navbar-nav'>
-							<li className='nav-item' onClick={() => handleItemClick('connect')}>
-								<Link className={selectedItem === 'connect' ? 'nav-link active' : 'nav-link'} to={'/connect'}>
-									Connect
+							<li className='nav-item' onClick={() => handleItemClick('register')}>
+								<Link className={selectedItem === 'register' ? 'nav-link active' : 'nav-link'} to={'/register'}>
+									Register
 								</Link>
 							</li>
 							<li className='nav-item' onClick={() => handleItemClick('admin')}>
