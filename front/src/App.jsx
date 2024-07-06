@@ -17,17 +17,15 @@ import Vendedor from './views/Vendedor';            //View
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import { WalletProvider } from './contexts/WalletContext';
+import { AppContextProvider } from './contexts/AppContext';
 
 function App() {
 
-  const [account, setAccount] = useState(null);
-  const [balance, setBalance] = useState(null);
 
   return (
     
     <Router>
-      <WalletProvider>
+      <AppContextProvider>
           <Routes>
             <Route path="/" element={<Home />}>
               <Route path="/about" element={<About />} />
@@ -38,11 +36,11 @@ function App() {
               <Route path='/bodeguero' element={<Bodeguero />} />
               <Route path='/transportista' element={<Transportista />} />
               <Route path='/vendedor' element={<Vendedor />} />
-              <Route path="/register" element={<Register account={account} />} />
+              <Route path="/register" element={<Register />} />
               <Route path='*' element={<h3>INVALID ROUTE</h3>} />
             </Route>
           </Routes>
-        </WalletProvider>
+        </AppContextProvider>
     </Router>
   );
 }

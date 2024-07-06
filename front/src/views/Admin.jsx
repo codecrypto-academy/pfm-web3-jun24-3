@@ -1,50 +1,54 @@
-import React, { useEffect } from 'react';
+import React, {  useEffect, useState } from 'react';
 import { ethers } from 'ethers';
-import { getAccount } from '../metamask';
-import { useWallet, userManagementContractAddress, userManagementContractABI } from '../contexts/WalletContext';
+import { useAppContext } from '../contexts/AppContext';
 
-function Admin() {
-	const { users, setUsers, setRole, setProvider, contract, setContract } = useWallet();
+const Admin = () => {
 
-	useEffect(() => {
-		const initEthers = async () => {
-			const { provider } = await getAccount();
-			const signer = provider.getSigner();
-			setProvider(provider);
-			setContract(new ethers.Contract(userManagementContractAddress, userManagementContractABI, signer));
-		};
-
-		initEthers();
-	}, []);
+	const { metaMaskHook, contractHook} = useAppContext();
 
 	useEffect(() => {
 		const fetchAllUsers = async () => {
-			if (!contract) return;
 
 			try {
-				const addresses = await contract.getAllUsers();
-				console.log(addresses);
-				const usersInfo = await Promise.all(addresses.map(async (address) => {
-					const userInfo = await contract.getUserInfo(address);
-					const rolesString = await contract.getRolesAsString();
-					return {
-						address,
-						role: rolesString[userInfo.role],
-						email: userInfo.email,
-						isRegistered: userInfo.isRegistered
-					};
+				
+				const contractUsers = new ethers.Contract(
+					contractHook.userManagementContractAddress, 
+					contractHook.userManagementContractABI, 
+					metaMaskHook.signer);
+
+				const addresses = await contractUsers.getAllUsers();
+
+				const usersInfo = await Promise.all(
+					addresses.map(async (address) => {
+
+						//console.log('useEffect fetchAllUsers - address:' + address);
+
+						const userInfo = await contractUsers.getUserInfo(address);
+						//console.log('useEffect fetchAllUsers - userInfo:' + userInfo);
+
+						const rolesString = await contractUsers.getRolesAsString();
+						//console.log('useEffect fetchAllUsers - rolesString:' + rolesString);
+
+						return {
+							address,
+							role: rolesString[userInfo.role],
+							email: userInfo.email,
+							isRegistered: userInfo.isRegistered
+						};
 				}));
-				setUsers(usersInfo);
-			} catch (err) {
+				
+				contractHook.setUsers(usersInfo);
+			} 
+			catch (err) {
 				console.error('Error in Admin.jsx: ', err);
 			}
 		};
 
 		fetchAllUsers();
-	}, [contract]);
+	}, []);
 
 	const handleRoleChange = (e) => {
-		setRole(e.target.value);
+		contractHook.setRole(e.target.value);
 	};
 
 	return (
@@ -60,7 +64,7 @@ function Admin() {
 						</tr>
 					</thead>
 					<tbody>
-						{users.map((user) => (
+						{contractHook.users.map((user) => (
 							<tr key={user.address}>
 								<td>{user.email}</td>
 								<td>{user.role}</td>

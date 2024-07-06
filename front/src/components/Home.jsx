@@ -7,12 +7,12 @@ import { Outlet, Link } from 'react-router-dom';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 
-import { useWallet, userManagementContractABI, userManagementContractAddress } from '../contexts/WalletContext';
+import { useAppContext, userManagementContractABI, userManagementContractAddress } from '../contexts/AppContext';
 
 function Home() {
 
 
-	const { account, role, setRole, contract } = useWallet();
+	const { account, role, setRole, contract } = useAppContext();
 	const [selectedItem, setSelectedItem] = useState(null);
 	const initRole = async () => {
 		if (!contract || !account) return;

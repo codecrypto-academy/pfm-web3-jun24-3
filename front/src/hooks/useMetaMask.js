@@ -4,12 +4,15 @@ import { ethers } from 'ethers';
 const useMetaMask = () => {
     const [account, setAccount] = useState(null);
     const [balance, setBalance] = useState(null);
+    const [provider, setProvider] = useState(null);
+    const [signer, setSigner] = useState(null);
+
   
     useEffect(() => {
       const loadMetaMask = async () => {
         if (window.ethereum) {
           const provider = new ethers.providers.Web3Provider(window.ethereum);
-  
+          
           try {
             // Solicita la conexión con MetaMask
             await provider.send('eth_requestAccounts', []);
@@ -21,6 +24,8 @@ const useMetaMask = () => {
   
             setAccount(account);
             setBalance(ethers.utils.formatEther(balance));
+            setProvider(provider);
+            setSigner(signer);
   
             // Escucha cambios en las cuentas
             window.ethereum.on('accountsChanged', async (accounts) => {
@@ -45,7 +50,7 @@ const useMetaMask = () => {
       loadMetaMask();
     }, []);
   
-    return { account, balance };
+    return { account, balance, provider, signer };
   };
   
   export default useMetaMask;
