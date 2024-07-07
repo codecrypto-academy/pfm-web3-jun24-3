@@ -48,7 +48,7 @@ const Admin = () => {
 	}, []);
 
 	const handleRoleChange = (e) => {
-		contractHook.setRole(e.target.value);
+		metaMaskHook.setRole(e.target.value);
 	};
 
 	return (
@@ -58,6 +58,7 @@ const Admin = () => {
 				<table className="table table-bordered">
 					<thead>
 						<tr>
+							<th scope="col">Address</th>
 							<th scope="col">Email</th>
 							<th scope="col">Role</th>
 							<th scope="col">Registered</th>
@@ -66,6 +67,7 @@ const Admin = () => {
 					<tbody>
 						{contractHook.users.map((user) => (
 							<tr key={user.address}>
+								<td>{user.address}</td>
 								<td>{user.email}</td>
 								<td>{user.role}</td>
 								<td>{user.isRegistered.toString()}</td>

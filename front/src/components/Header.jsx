@@ -6,7 +6,7 @@ import { useAppContext  } from '../contexts/AppContext';
 
 function Header() {
 
-	const { metaMaskHook } = useAppContext();
+	const { metaMaskHook, contractHook } = useAppContext();
 	
 	return (
 		<div className='bg-dark text-white text-center d-flex align-items-start justify-content-center py-4' >
@@ -31,6 +31,10 @@ function Header() {
 											<tr>
 												<td className="text-start">Balance  </td>
 												<td className="text-start">{metaMaskHook.balance} ETH</td>
+											</tr>
+											<tr>
+												<td className="text-start">Role  </td>
+												<td className="text-start">{contractHook.role}</td>
 											</tr>
 											</tbody>
 										</table>
