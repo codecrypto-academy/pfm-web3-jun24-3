@@ -30,37 +30,37 @@ contract TrackTest is Test {
 
         UserManagement.UserInfo memory userInfo = userManagement.getUserInfo(owner);
         if (!userInfo.isRegistered) {
-            userManagement.registerUser(owner, "owner@example.com");
+            userManagement.registerUser(owner, "owner@example.com", 4);
             userManagement.setUserRole(owner, uint(UserManagement.Role.Admin));
         }
 
         userInfo = userManagement.getUserInfo(agricultor);
         if (!userInfo.isRegistered) {
-            userManagement.registerUser(agricultor, "agricultor@example.com");
+            userManagement.registerUser(agricultor, "agricultor@example.com", 0);
             userManagement.setUserRole(agricultor, uint(UserManagement.Role.Agricultor));
         }
 
         userInfo = userManagement.getUserInfo(bodegero);
         if (!userInfo.isRegistered) {
-            userManagement.registerUser(bodegero, "bodegero@example.com");
+            userManagement.registerUser(bodegero, "bodegero@example.com", 1);
             userManagement.setUserRole(bodegero, uint(UserManagement.Role.Bodegero));
         }
 
         userInfo = userManagement.getUserInfo(transportista);
         if (!userInfo.isRegistered) {
-            userManagement.registerUser(transportista, "transportista@example.com");
+            userManagement.registerUser(transportista, "transportista@example.com", 2);
             userManagement.setUserRole(transportista, uint(UserManagement.Role.Transportista));
         }
 
         userInfo = userManagement.getUserInfo(vendedor);
         if (!userInfo.isRegistered) {
-            userManagement.registerUser(vendedor, "vendedor@example.com");
+            userManagement.registerUser(vendedor, "vendedor@example.com", 3);
             userManagement.setUserRole(vendedor, uint(UserManagement.Role.Vendedor));
         }
 
         userInfo = userManagement.getUserInfo(minorista);
         if (!userInfo.isRegistered) {
-            userManagement.registerUser(minorista, "minorista@example.com");
+            userManagement.registerUser(minorista, "minorista@example.com", 3);
             userManagement.setUserRole(minorista, uint(UserManagement.Role.Cliente));
         }
 
