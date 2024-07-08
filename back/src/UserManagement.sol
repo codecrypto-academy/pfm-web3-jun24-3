@@ -39,11 +39,11 @@ contract UserManagement {
         owner = _owner;
     }
 
-    function registerUser(address _userAddress, string memory _email) public {
+    function registerUser(address _userAddress, string memory _email, uint _role) public {
         if (users[_userAddress].isRegistered) {
             revert("Error: User already registered");
         }
-        users[_userAddress] = UserInfo(Role.Pendiente_Asignacion_Rol, _email, true);
+        users[_userAddress] = UserInfo(Role(_role), _email, true);
         userAddresses.push(_userAddress);
     }
 

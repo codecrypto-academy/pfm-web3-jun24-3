@@ -97,7 +97,7 @@
     "name": "registerUser",
     "inputs": [
       {
-        "name": "_user",
+        "name": "_userAddress",
         "type": "address",
         "internalType": "address"
       },
@@ -105,6 +105,11 @@
         "name": "_email",
         "type": "string",
         "internalType": "string"
+      },
+      {
+        "name": "_role",
+        "type": "uint256",
+        "internalType": "uint256"
       }
     ],
     "outputs": [],

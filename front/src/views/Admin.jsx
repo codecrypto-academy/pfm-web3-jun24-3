@@ -1,15 +1,13 @@
 import React, {  useEffect, useState } from 'react';
 import { ethers } from 'ethers';
 import { useAppContext } from '../contexts/AppContext';
-import useMetaMask from '../hooks/useMetaMask';
-import useContracts from '../hooks/useContracts';
 
 const Admin = () => {
 
 	const { account, setAccount, balance, setBalance, provider, setProvider, signer, setSigner,
 		userManagementContractAddress, userManagementContractABI,
 		contractUser, setContractUser, users, setUsers,
-		currentRole, setCurrentRole,roles } = useAppContext();
+		currentRole, setCurrentRole,roles, roleList } = useAppContext();
 
 	useEffect(() => {
 		const fetchAllUsers = async () => {
@@ -47,10 +45,9 @@ const Admin = () => {
 		fetchAllUsers();
 	}, []);
 
-	const handleRoleChange = (newRole) => {
-		console.log('Admin.jsx: handleRoleChange. newRole: ' + newRole);
-		setCurrentRole(newRole);
-	};
+	const handleRoleChange = (e) => {
+		setCurrentRole(e.target.value);
+	  };
 
 	const handleClickAsignRole = () => {
 		//contractHook.setRole(e.target.value);
@@ -67,8 +64,7 @@ const Admin = () => {
 							<th scope="col">Address</th>
 							<th scope="col">Email</th>
 							<th scope="col">Registered</th>
-							<th scope="col">Current Role</th>
-							<th scope="col">New Role</th>
+							<th scope="col">Role</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -78,17 +74,6 @@ const Admin = () => {
 								<td>{user.email}</td>
 								<td>{user.isRegistered.toString()}</td>
 								<td>{user.role}</td>
-								<td>{ 
-									<select
-										onChange={(e) => handleRoleChange(e.target.value)}>
-										{roles.map((role) => (
-											<option key={role.roleId} value={role.roleId}>
-											{role.roleString}
-											</option>
-										))}
-									</select>
-									
-								}</td>
 							</tr>
 						))}
 					</tbody>

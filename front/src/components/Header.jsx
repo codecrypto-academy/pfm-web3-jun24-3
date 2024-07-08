@@ -10,6 +10,10 @@ function Header() {
 		contractUser, setContractUser, users, setUsers,
 		currentRole, setCurrentRole, roles } = useAppContext();
 
+
+	const currentUserInfo = users.find(user => user.address == {account});
+	console.log('currentUserInfo: ' + currentUserInfo);
+
 	return (
 		<div className='bg-dark text-white text-center d-flex align-items-start justify-content-center py-4' >
 
@@ -33,10 +37,6 @@ function Header() {
 											<tr>
 												<td className="text-start">Balance  </td>
 												<td className="text-start">{balance} ETH</td>
-											</tr>
-											<tr>
-												<td className="text-start">Role  </td>
-												<td className="text-start">{currentRole}</td>
 											</tr>
 											</tbody>
 										</table>

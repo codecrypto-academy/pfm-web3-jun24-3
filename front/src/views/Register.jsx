@@ -8,18 +8,25 @@ const Register = () => {
   const { account, setAccount, balance, setBalance, provider, setProvider, signer, setSigner,
 		userManagementContractAddress, userManagementContractABI,
 		contractUser, setContractUser, users, setUsers,
-		currentRole, setCurrentRole,roles } = useAppContext();
+		currentRole, setCurrentRole,roles, roleList } = useAppContext();
 
 
   const [email, setEmail] = useState('');
+  const [role, setRole] = useState(roles.PENDIENTE_ASIGNACION_ROL);
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
   const [txError, setTxError] = useState('');
   const [txHash, setTxHash] = useState('');
 
+
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
   };
+
+  const handleRoleChange = (e) => {
+    setRole(e.target.value);
+  };
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -31,13 +38,14 @@ const Register = () => {
                                       signer);
 
     try {
-      const tx = await contractUsers.registerUser(account, email, { from: account });
+      console.log('Calling contractUsers.registerUser with account,email,role,index: ', account,email,role,roleList.indexOf(role));
+      const tx = await contractUsers.registerUser(account, email, roleList.indexOf(role));
       await tx.wait();
-      console.log('Hash: ', tx.hash);
+      console.log('Register Success!! TX Hash: ', tx.hash);
       setIsLoading(false);
       setTxHash(tx.hash);
     } catch (err) {
-      console.error('Register Error: ', err);
+      console.error('Register Failed!! Error: ', err);
       setIsLoading(false);
       setTxError(err);
       setIsError(true);
@@ -69,6 +77,21 @@ const Register = () => {
               value={email}
               onChange={handleEmailChange}
             />
+          </Form.Group>
+          <Form.Group controlId="formRole">
+            <Form.Label>Role</Form.Label>
+              <Form.Select
+                id="role"
+                name="role"
+                value={role}
+                onChange={handleRoleChange}
+                >
+                {Object.values(roles).map((role) => (
+                  <option key={role} value={role}>
+                    {role}
+                  </option>
+                ))}
+              </Form.Select>
           </Form.Group>
           <p></p>
           <Button className='btn btn-dark' type="submit">
