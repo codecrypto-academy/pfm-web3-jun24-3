@@ -6,9 +6,10 @@ import useContracts from '../hooks/useContracts';
 
 const Admin = () => {
 
-	const { metaMaskHook, contractHook} = useAppContext();
-	//const metaMaskHook = useMetaMask();
-    //const contractHook = useContracts();
+	const { account, setAccount, balance, setBalance, provider, setProvider, signer, setSigner,
+		userManagementContractAddress, userManagementContractABI,
+		contractUser, setContractUser, users, setUsers,
+		currentRole, setCurrentRole,roles } = useAppContext();
 
 	useEffect(() => {
 		const fetchAllUsers = async () => {
@@ -16,9 +17,9 @@ const Admin = () => {
 			try {
 				
 				const contractUsers = new ethers.Contract(
-					contractHook.userManagementContractAddress, 
-					contractHook.userManagementContractABI, 
-					metaMaskHook.signer);
+					userManagementContractAddress, 
+					userManagementContractABI, 
+					signer);
 
 				const addresses = await contractUsers.getAllUsers();
 
@@ -36,7 +37,7 @@ const Admin = () => {
 						};
 				}));
 				
-				contractHook.setUsers(usersInfo);
+				setUsers(usersInfo);
 			} 
 			catch (err) {
 				console.error('Error in Admin.jsx: ', err);
@@ -48,12 +49,12 @@ const Admin = () => {
 
 	const handleRoleChange = (newRole) => {
 		console.log('Admin.jsx: handleRoleChange. newRole: ' + newRole);
-		contractHook.setCurrentRole(newRole);
+		setCurrentRole(newRole);
 	};
 
 	const handleClickAsignRole = () => {
 		//contractHook.setRole(e.target.value);
-		console.log('Admin.jsx: handleClickAsignRole. Assign new role: ' + contractHook.currentRole);
+		console.log('Admin.jsx: handleClickAsignRole. Assign new role: ' + currentRole);
 	};
 
 	return (
@@ -71,16 +72,16 @@ const Admin = () => {
 						</tr>
 					</thead>
 					<tbody>
-						{contractHook.users.map((user) => (
+						{users.map((user) => (
 							<tr key={user.address}>
 								<td>{user.address}</td>
 								<td>{user.email}</td>
 								<td>{user.isRegistered.toString()}</td>
 								<td>{user.role}</td>
-								<td>{
+								<td>{ 
 									<select
 										onChange={(e) => handleRoleChange(e.target.value)}>
-										{contractHook.roles.map((role) => (
+										{roles.map((role) => (
 											<option key={role.roleId} value={role.roleId}>
 											{role.roleString}
 											</option>

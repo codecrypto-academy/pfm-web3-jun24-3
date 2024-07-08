@@ -5,7 +5,12 @@ import { useAppContext  } from '../contexts/AppContext';
 
 const Register = () => {
 
-  const { metaMaskHook, contractHook} = useAppContext();
+  const { account, setAccount, balance, setBalance, provider, setProvider, signer, setSigner,
+		userManagementContractAddress, userManagementContractABI,
+		contractUser, setContractUser, users, setUsers,
+		currentRole, setCurrentRole,roles } = useAppContext();
+
+
   const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isError, setIsError] = useState(false);
@@ -21,12 +26,12 @@ const Register = () => {
 
     setIsLoading(true);
     const contractUsers = new ethers.Contract(
-                                      contractHook.userManagementContractAddress, 
-                                      contractHook.userManagementContractABI, 
-                                      metaMaskHook.signer);
+                                      userManagementContractAddress, 
+                                      userManagementContractABI, 
+                                      signer);
 
     try {
-      const tx = await contractUsers.registerUser(metaMaskHook.account, email, { from: metaMaskHook.account });
+      const tx = await contractUsers.registerUser(account, email, { from: account });
       await tx.wait();
       console.log('Hash: ', tx.hash);
       setIsLoading(false);
@@ -52,7 +57,7 @@ const Register = () => {
             <Form.Label className="text-sm-right text-left">Connected Address:</Form.Label>
             <Form.Control
               type="text"
-              value={metaMaskHook.account || ''}
+              value={account || ''}
               readOnly
             />
           </Form.Group>

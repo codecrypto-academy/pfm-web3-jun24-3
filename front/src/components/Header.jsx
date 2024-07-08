@@ -2,14 +2,13 @@ import image from '../assets/image2.png';
 import metamaskLogo from '../assets/logo-metamask.png';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useAppContext  } from '../contexts/AppContext';
-import useMetaMask from '../hooks/useMetaMask';
-import useContracts from '../hooks/useContracts';
 
 function Header() {
 
-	//const { metaMaskHook, contractHook } = useAppContext();
-	const metaMaskHook = useMetaMask();
-    const contractHook = useContracts();
+	const { account, setAccount, balance, setBalance, provider, setProvider, signer, setSigner,
+		userManagementContractAddress, userManagementContractABI,
+		contractUser, setContractUser, users, setUsers,
+		currentRole, setCurrentRole, roles } = useAppContext();
 
 	return (
 		<div className='bg-dark text-white text-center d-flex align-items-start justify-content-center py-4' >
@@ -23,21 +22,21 @@ function Header() {
 								<img src={metamaskLogo}  width='50%' />
 							</td>
 							<td>
-								{metaMaskHook.account ? (
+								{account ? (
 									<div>
 										<table className="bg-dark text-white  table-bordered border-light">
 											<tbody>
 											<tr>
 												<td className="text-start">Account</td>
-												<td className="text-start">{metaMaskHook.account}</td>
+												<td className="text-start">{account}</td>
 											</tr>
 											<tr>
 												<td className="text-start">Balance  </td>
-												<td className="text-start">{metaMaskHook.balance} ETH</td>
+												<td className="text-start">{balance} ETH</td>
 											</tr>
 											<tr>
 												<td className="text-start">Role  </td>
-												<td className="text-start">{contractHook.currentRole}</td>
+												<td className="text-start">{currentRole}</td>
 											</tr>
 											</tbody>
 										</table>
