@@ -64,3 +64,8 @@ $ forge --help
 $ anvil --help
 $ cast --help
 ```
+
+```bash
+cast send --rpc-url <RPC_URL> --account account-key <CONTRACT_ADDRESS> <SIGNATURE_FUNCTION> <ARGS>
+cast call <CONTRACT_ADDRESS> <SIGNATURE_FUNCTION> <ARGS>
+```

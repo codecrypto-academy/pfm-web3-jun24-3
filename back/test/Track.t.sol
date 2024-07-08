@@ -61,7 +61,7 @@ contract TrackTest is Test {
 
     function testAddTrackItemAsAgricultor() public {
         vm.prank(agricultor);
-        track.addTrackItem(1, "2024/06/01", "Spain", "1000 kg", "Lote Uva Tipo 1", "Agricultor1", agricultor, agricultor, Track.Status.Disponible, "Precio de venta", keccak256(abi.encodePacked("itemHash")));
+        track.addTrackItem(1, "2024/06/01", "Spain", "1000 kg", "Lote Uva Tipo 1", "Agricultor1", agricultor, agricultor, 0, "Precio de venta", keccak256(abi.encodePacked("itemHash")));
 
         Track.TrackItem[] memory items = track.getTrackItems(1);
         emit log_named_uint("Items length", items.length);
@@ -73,7 +73,7 @@ contract TrackTest is Test {
     function testFailAddTrackItemAsBodegeroWithStatusDisponible() public {
         vm.prank(bodegero);
         vm.expectRevert("Error: Unauthorized role for this status");
-        try track.addTrackItem(1, "2024/06/01", "Spain", "1000 kg", "Lote Uva Tipo 1", "Bodegero1", bodegero, bodegero, Track.Status.Disponible, "Precio de venta", keccak256(abi.encodePacked("itemHash"))) {
+        try track.addTrackItem(1, "2024/06/01", "Spain", "1000 kg", "Lote Uva Tipo 1", "Bodegero1", bodegero, bodegero, 0, "Precio de venta", keccak256(abi.encodePacked("itemHash"))) {
             emit log("Expected revert, but call succeeded");
             assert(false);
         } catch Error(string memory reason) {
@@ -86,7 +86,7 @@ contract TrackTest is Test {
 
     function testAddTrackItemAsBodegeroWithStatusProcesando() public {
         vm.prank(bodegero);
-        track.addTrackItem(1, "2024/06/02", "Spain", "1000 kg", "Lote Uva Tipo 1", "Bodegero1", bodegero, bodegero, Track.Status.Procesando, "Precio de venta", keccak256(abi.encodePacked("itemHash")));
+        track.addTrackItem(1, "2024/06/02", "Spain", "1000 kg", "Lote Uva Tipo 1", "Bodegero1", bodegero, bodegero, 1, "Precio de venta", keccak256(abi.encodePacked("itemHash")));
 
         Track.TrackItem[] memory items = track.getTrackItems(1);
         emit log_named_uint("Items length", items.length);
@@ -97,7 +97,7 @@ contract TrackTest is Test {
 
     function testAddTrackItemAsTransportista() public {
         vm.prank(transportista);
-        track.addTrackItem(1, "2024/06/03", "Spain", "1000 kg", "Lote Uva Tipo 1", "Transportista1", transportista, transportista, Track.Status.EnRuta, "Precio de venta", keccak256(abi.encodePacked("itemHash")));
+        track.addTrackItem(1, "2024/06/03", "Spain", "1000 kg", "Lote Uva Tipo 1", "Transportista1", transportista, transportista, 5, "Precio de venta", keccak256(abi.encodePacked("itemHash")));
 
         Track.TrackItem[] memory items = track.getTrackItems(1);
         emit log_named_uint("Items length", items.length);
@@ -108,7 +108,7 @@ contract TrackTest is Test {
 
     function testAddTrackItemAsVendedorWithStatusPedidoRealizado() public {
         vm.prank(vendedor);
-        track.addTrackItem(1, "2024/06/04", "Spain", "1000 kg", "Lote Uva Tipo 1", "Vendedor1", vendedor, vendedor, Track.Status.PedidoRealizado, "Precio de venta", keccak256(abi.encodePacked("itemHash")));
+        track.addTrackItem(1, "2024/06/04", "Spain", "1000 kg", "Lote Uva Tipo 1", "Vendedor1", vendedor, vendedor, 3, "Precio de venta", keccak256(abi.encodePacked("itemHash")));
 
         Track.TrackItem[] memory items = track.getTrackItems(1);
         emit log_named_uint("Items length", items.length);
@@ -120,7 +120,7 @@ contract TrackTest is Test {
     function testFailAddTrackItemAsMinoristaWithStatusProcesando() public {
         vm.prank(minorista);
         vm.expectRevert("Error: Unauthorized role for this status");
-        try track.addTrackItem(1, "2024/06/05", "Spain", "1000 kg", "Lote Uva Tipo 1", "Minorista1", minorista, minorista, Track.Status.Procesando, "Precio de venta", keccak256(abi.encodePacked("itemHash"))) {
+        try track.addTrackItem(1, "2024/06/05", "Spain", "1000 kg", "Lote Uva Tipo 1", "Minorista1", minorista, minorista, 1, "Precio de venta", keccak256(abi.encodePacked("itemHash"))) {
             emit log("Expected revert, but call succeeded");
             assert(false);
         } catch Error(string memory reason) {
@@ -133,7 +133,8 @@ contract TrackTest is Test {
 
     function testAddTrackItemAsMinoristaWithStatusEntregado() public {
         vm.prank(minorista);
-        track.addTrackItem(1, "2024/06/06", "Spain", "1000 kg", "Lote Uva Tipo 1", "Minorista1", minorista, minorista, Track.Status.Entregado, "Precio de venta", keccak256(abi.encodePacked("itemHash")));
+        track.addTrackItem(1, "2024/06/06", "Spain", "1000 kg", "Lote Uva Tipo 1", "Minorista1", minorista, minorista, 
+        4, "Precio de venta", keccak256(abi.encodePacked("itemHash")));
 
         Track.TrackItem[] memory items = track.getTrackItems(1);
         emit log_named_uint("Items length", items.length);
