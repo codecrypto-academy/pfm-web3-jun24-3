@@ -18,7 +18,7 @@ import Vendedor from './views/Vendedor';            //View
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import { AppContextProvider } from './contexts/AppContext';
+//import { AppContextProvider } from './contexts/AppContext';
 
 function App() {
 
@@ -26,7 +26,7 @@ function App() {
   return (
     
     <Router>
-      <AppContextProvider>
+
           <Routes>
             <Route path="/" element={<Home />}>
               <Route path="/about" element={<About />} />
@@ -41,7 +41,7 @@ function App() {
               <Route path='*' element={<h3>INVALID ROUTE</h3>} />
             </Route>
           </Routes>
-        </AppContextProvider>
+       
     </Router>
   );
 }

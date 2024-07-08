@@ -6,8 +6,6 @@ const useMetaMask = () => {
     const [balance, setBalance] = useState(null);
     const [provider, setProvider] = useState(null);
     const [signer, setSigner] = useState(null);
-    const [role, setRole] = useState('');
-    const [users, setUsers] = useState([]);
   
     useEffect(() => {
       const loadMetaMask = async () => {
@@ -51,7 +49,7 @@ const useMetaMask = () => {
       loadMetaMask();
     }, [account]);
   
-    return { account, balance, provider, signer, role, setRole };
+    return { account, balance, provider, signer };
   };
   
   export default useMetaMask;

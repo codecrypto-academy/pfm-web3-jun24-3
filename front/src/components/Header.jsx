@@ -2,12 +2,15 @@ import image from '../assets/image2.png';
 import metamaskLogo from '../assets/logo-metamask.png';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { useAppContext  } from '../contexts/AppContext';
-
+import useMetaMask from '../hooks/useMetaMask';
+import useContracts from '../hooks/useContracts';
 
 function Header() {
 
-	const { metaMaskHook, contractHook } = useAppContext();
-	
+	//const { metaMaskHook, contractHook } = useAppContext();
+	const metaMaskHook = useMetaMask();
+    const contractHook = useContracts();
+
 	return (
 		<div className='bg-dark text-white text-center d-flex align-items-start justify-content-center py-4' >
 
@@ -34,7 +37,7 @@ function Header() {
 											</tr>
 											<tr>
 												<td className="text-start">Role  </td>
-												<td className="text-start">{contractHook.role}</td>
+												<td className="text-start">{contractHook.currentRole}</td>
 											</tr>
 											</tbody>
 										</table>

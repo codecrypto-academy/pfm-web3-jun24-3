@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Outlet, Link } from 'react-router-dom';
 import { useAppContext  } from '../contexts/AppContext';
+import useMetaMask from '../hooks/useMetaMask';
+import useContracts from '../hooks/useContracts';
 import { ethers } from 'ethers';
 
 // Components
@@ -10,9 +12,13 @@ import Footer from '../components/Footer';
 
 function Home() {
 
-	const {metaMaskHook, contractHook} = useAppContext();
+	//const {metaMaskHook, contractHook} = useAppContext();
+	const metaMaskHook = useMetaMask();
+    const contractHook = useContracts();
+
 	const [selectedItem, setSelectedItem] = useState(null);
 
+	
 	const isNavItemEnabled = (role, allowedRole) => {
 		return role === allowedRole;
 	};
@@ -21,10 +27,13 @@ function Home() {
 
 		const loadHome = async () =>{
 			console.log('Loading Home component');
+			console.log('Home: metaMaskHook.account -> ' + metaMaskHook.account);
+			console.log('Home: metaMaskHook.balance -> ' + metaMaskHook.balance);
+			console.log('Home: metaMaskHook.provider -> ' + metaMaskHook.provider);
+			console.log('Home: metaMaskHook.signer -> ' + metaMaskHook.signer);
 			console.log('Home: contractHook.userManagementContractAddress -> ' + contractHook.userManagementContractAddress);
 			console.log('Home: contractHook.userManagementContractABIs -> ' + contractHook.userManagementContractABI);
-			console.log('Home: metaMaskHook.signer -> ' + metaMaskHook.signer);
-	
+			console.log('Home: contractHook.currentRole -> ' + contractHook.currentRole);
 			
 			//load contract user
 			if(metaMaskHook.account){
@@ -38,15 +47,13 @@ function Home() {
 					if(!contractUser)
 						contractHook.setContractUser(contractUser);
 		
-					console.log('Home: contractHook.setContractUser -> ' + contractHook.setContractUser);
-					console.log('Home: metaMaskHook.account -> ' + metaMaskHook.account);
-		
 					//load current user
-					const userInfo =  getCurrentUserRole(contractUser);
+					const userInfo =  await getCurrentUserRole(contractUser);
 		
 					if(userInfo){
-						console.log('Home: contractHook.setRole(userInfo.role) -> ' + userInfo.role);
-						contractHook.setRole(userInfo.role);
+						console.log('Home: userInfo.role -> ' + userInfo.role);
+						contractHook.setCurrentRole(userInfo.role);
+						console.log('Home: contractHook.currentRole -> ' + contractHook.currentRole);
 					}
 		
 				}
@@ -61,23 +68,23 @@ function Home() {
 		};
 		loadHome();
 			
-	  }, [contractHook.role]);
+	  }, [metaMaskHook.account]);
 
 	  
 
-	  const getCurrentUserRole = async (contractUser) => {
-			if(contractUser){
-				console.log('Home-getCurrentUserRole: contractUser.getUserInfo');
-				const userInfo = await contractUser.getUserInfo(metaMaskHook.account);
-				console.log('Home-getCurrentUserRole: contractUser.getUserInfo response: userInfo -> '+userInfo);
-				contractHook.setRole(userInfo.role);
-				return userInfo;
-			}
-			else{
-				console.log('Home-getCurrentUserRole: NO contractUser avaliable');
-			}
-			
+	const getCurrentUserRole = async (contractUser) => {
+
+		if(contractUser){
+
+			const userInfo = await contractUser.getUserInfo(metaMaskHook.account);
+			contractHook.setCurrentRole(userInfo.role);
+			return userInfo;
 		}
+		else{
+			console.log('Home-getCurrentUserRole: NO contractUser avaliable');
+		}
+		
+	}
 
 
 	const handleItemClick = (itemName) => {
@@ -91,32 +98,32 @@ function Home() {
 				<div className='container'>
 					<div className='collapse navbar-collapse' id='navbarNav'>
 						<ul className='navbar-nav'>
-							<li className='nav-item' onClick={() => handleItemClick('register')}>
+							<li className={metaMaskHook.account ? '' : 'disabled'} onClick={() => handleItemClick('register')}>
 								<Link className={selectedItem === 'register' ? 'nav-link active' : 'nav-link'} to={'/register'}>
 									Register
 								</Link>
 							</li>
-							<li className={isNavItemEnabled(contractHook.role, 4) ? '' : 'disabled'} onClick={() => handleItemClick('admin')}>
+							<li className={metaMaskHook.account && isNavItemEnabled(contractHook.currentRole, 4) ? '' : 'disabled'}  onClick={() => handleItemClick('admin')}>
 								<Link className={selectedItem === 'admin' ? 'nav-link active' : 'nav-link'} to={'/admin'}>
 									Admin
 								</Link>
 							</li>
-							<li className={isNavItemEnabled(contractHook.role, 0) ? '' : 'disabled'} onClick={() => handleItemClick('agricultor')}>
+							<li className={metaMaskHook.account && isNavItemEnabled(contractHook.currentRole, 0) ? '' : 'disabled'}  onClick={() => handleItemClick('agricultor')}>
 								<Link className={selectedItem === 'agricultor' ? 'nav-link active' : 'nav-link'} to={'/agricultor'}>
 									Agricultor
 								</Link>
 							</li>
-							<li className={isNavItemEnabled(contractHook.role, 1) ? '' : 'disabled'} onClick={() => handleItemClick('bodeguero')}>
+							<li className={metaMaskHook.account && isNavItemEnabled(contractHook.currentRole, 1) ? '' : 'disabled'}  onClick={() => handleItemClick('bodeguero')}>
 								<Link className={selectedItem === 'bodegero' ? 'nav-link active' : 'nav-link'} to={'/bodeguero'}>
 									Bodeguero
 								</Link>
 							</li>
-							<li className={isNavItemEnabled(contractHook.role, 2) ? '' : 'disabled'} onClick={() => handleItemClick('transportista')}>
+							<li className={metaMaskHook.account && isNavItemEnabled(contractHook.currentRole, 2) ? '' : 'disabled'}  onClick={() => handleItemClick('transportista')}>
 								<Link className={selectedItem === 'transportista' ? 'nav-link active' : 'nav-link'} to={'/transportista'}>
 									Transportista
 								</Link>
 							</li>
-							<li className={isNavItemEnabled(contractHook.role, 3) ? '' : 'disabled'} onClick={() => handleItemClick('vendedor')}>
+							<li className={metaMaskHook.account && isNavItemEnabled(contractHook.currentRole, 3) ? '' : 'disabled'}  onClick={() => handleItemClick('vendedor')}>
 								<Link className={selectedItem === 'vendedor' ? 'nav-link active' : 'nav-link'} to={'/vendedor'}>
 									Vendedor
 								</Link>
