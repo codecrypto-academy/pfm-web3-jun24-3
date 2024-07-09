@@ -1,5 +1,5 @@
 -include .env
-.PHONY: test deploy_track
+.PHONY: test deploy_track deploy_user_management
 
 help:
 	@echo "Usage:"

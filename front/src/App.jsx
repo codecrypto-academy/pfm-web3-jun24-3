@@ -26,7 +26,7 @@ function App() {
   return (
     
     <Router>
-      <AppContextProvider>
+        <AppContextProvider>
           <Routes>
             <Route path="/" element={<Home />}>
               <Route path="/about" element={<About />} />

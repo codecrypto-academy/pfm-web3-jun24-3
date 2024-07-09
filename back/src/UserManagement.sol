@@ -25,6 +25,9 @@ contract UserManagement {
 
     constructor() {
         owner = msg.sender;
+        //Set owner as default admin
+        users[owner] = UserInfo(Role.Admin, 'admin@mail', true);
+        userAddresses.push(owner);
     }
 
     function setOwner(address _owner) public {
@@ -36,12 +39,12 @@ contract UserManagement {
         owner = _owner;
     }
 
-    function registerUser(address _user, string memory _email) public {
-        if (users[_user].isRegistered) {
+    function registerUser(address _userAddress, string memory _email, uint _role) public {
+        if (users[_userAddress].isRegistered) {
             revert("Error: User already registered");
         }
-        users[_user] = UserInfo(Role.Pendiente_Asignacion_Rol, _email, true);
-        userAddresses.push(_user);
+        users[_userAddress] = UserInfo(Role(_role), _email, true);
+        userAddresses.push(_userAddress);
     }
 
     function getUserInfo(address _user) public view returns (UserInfo memory) {

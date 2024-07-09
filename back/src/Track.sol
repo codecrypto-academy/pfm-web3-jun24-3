@@ -51,15 +51,15 @@ contract Track {
         string memory _name,
         address _origin,
         address _owner,
-        Status _status,
+        uint256 _status,
         string memory _value,
         bytes32 _itemHash
     ) public {
         UserManagement.UserInfo memory userInfo = userManagement.getUserInfo(msg.sender);
-        require(
-            canAddItem(userInfo.role, _status),
+        /*require(
+            canAddItem(userInfo.role, Status(_status)),
             "Error: Unauthorized role for this status"
-        );
+        );*/
 
         uint256 trackItemId = tracks[_trackId].length + 1;
 
@@ -73,14 +73,14 @@ contract Track {
             name: _name,
             origin: _origin,
             owner: _owner,
-            status: _status,
+            status: Status(_status),
             value: _value,
             itemHash: _itemHash
         });
 
         tracks[_trackId].push(newItem);
 
-        emit TrackItemAdded(_trackId, trackItemId, _status, _owner);
+        emit TrackItemAdded(_trackId, trackItemId, Status(_status), _owner);
     }
 
     function canAddItem(UserManagement.Role role, Status status) internal pure returns (bool) {

@@ -31,10 +31,10 @@ contract UserManagementTest is Test {
 
     function test_RegisterUser() public {
         address user = address(1);
-        UserManagement.Role role = UserManagement.Role.Pendiente_Asignacion_Rol;
         string memory email = "user@mail.com";
+        uint role = 6;
 
-        userManagement.registerUser(user, email);
+        userManagement.registerUser(user, email, role);
 
         UserManagement.UserInfo memory userInfo = userManagement.getUserInfo(
             user
@@ -48,10 +48,11 @@ contract UserManagementTest is Test {
     function test_RegisterUserTwice() public {
         address user = address(1);
         string memory email = "user@mail.com";
+        uint role = 6;
 
-        userManagement.registerUser(user, email);
+        userManagement.registerUser(user, email, role);
         vm.expectRevert(bytes("Error: User already registered"));
-        userManagement.registerUser(user, email);
+        userManagement.registerUser(user, email, role);
     }
 
     function test_SetUserRole() public {

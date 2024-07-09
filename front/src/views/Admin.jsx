@@ -4,7 +4,10 @@ import { useAppContext } from '../contexts/AppContext';
 
 const Admin = () => {
 
-	const { metaMaskHook, contractHook} = useAppContext();
+	const { account, setAccount, balance, setBalance, provider, setProvider, signer, setSigner,
+		userManagementContractAddress, userManagementContractABI,
+		contractUser, setContractUser, users, setUsers,
+		currentRole, setCurrentRole,roles, roleList } = useAppContext();
 
 	useEffect(() => {
 		const fetchAllUsers = async () => {
@@ -12,22 +15,17 @@ const Admin = () => {
 			try {
 				
 				const contractUsers = new ethers.Contract(
-					contractHook.userManagementContractAddress, 
-					contractHook.userManagementContractABI, 
-					metaMaskHook.signer);
+					userManagementContractAddress, 
+					userManagementContractABI, 
+					signer);
 
 				const addresses = await contractUsers.getAllUsers();
 
 				const usersInfo = await Promise.all(
 					addresses.map(async (address) => {
 
-						//console.log('useEffect fetchAllUsers - address:' + address);
-
 						const userInfo = await contractUsers.getUserInfo(address);
-						//console.log('useEffect fetchAllUsers - userInfo:' + userInfo);
-
 						const rolesString = await contractUsers.getRolesAsString();
-						//console.log('useEffect fetchAllUsers - rolesString:' + rolesString);
 
 						return {
 							address,
@@ -37,7 +35,7 @@ const Admin = () => {
 						};
 				}));
 				
-				contractHook.setUsers(usersInfo);
+				setUsers(usersInfo);
 			} 
 			catch (err) {
 				console.error('Error in Admin.jsx: ', err);
@@ -48,7 +46,12 @@ const Admin = () => {
 	}, []);
 
 	const handleRoleChange = (e) => {
-		contractHook.setRole(e.target.value);
+		setCurrentRole(e.target.value);
+	  };
+
+	const handleClickAsignRole = () => {
+		//contractHook.setRole(e.target.value);
+		console.log('Admin.jsx: handleClickAsignRole. Assign new role: ' + currentRole);
 	};
 
 	return (
@@ -58,22 +61,24 @@ const Admin = () => {
 				<table className="table table-bordered">
 					<thead>
 						<tr>
+							<th scope="col">Address</th>
 							<th scope="col">Email</th>
-							<th scope="col">Role</th>
 							<th scope="col">Registered</th>
+							<th scope="col">Role</th>
 						</tr>
 					</thead>
 					<tbody>
-						{contractHook.users.map((user) => (
+						{users.map((user) => (
 							<tr key={user.address}>
+								<td>{user.address}</td>
 								<td>{user.email}</td>
-								<td>{user.role}</td>
 								<td>{user.isRegistered.toString()}</td>
+								<td>{user.role}</td>
 							</tr>
 						))}
 					</tbody>
 				</table>
-				<button className='btn btn-dark' id="storeSelected">Assign Role</button>
+				<button className='btn btn-dark' id="storeSelected" onClick={handleClickAsignRole}>Assign Role</button>
 			</div>
 		</div>
 	);
