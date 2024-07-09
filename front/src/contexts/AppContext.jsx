@@ -26,13 +26,14 @@ export const AppContextProvider = ({ children }) => {
     const [currentRole, setCurrentRole] = useState(null);
 
     //Smart contracts
-    const userManagementContractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
+    const userManagementContractAddress = "0x2279B7A0a67DB372996a5FaB50D91eAA73d2eBe6";
     const userManagementContractABI = userManagementContractABIImport;
-    const trackManagementContractAddress = "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0";
+    const trackManagementContractAddress = "0x8A791620dd6260079BF849Dc5567aDC3F2FdC318";
     const trackManagementContractABI = trackManagementContractABIImport;
 
     const [contractUser, setContractUser] = useState(null);
     const [users, setUsers] = useState([]);
+    const [trackId, setTrackId] = useState(0);
 
 
     //METAMASK HOOKS
@@ -86,7 +87,8 @@ export const AppContextProvider = ({ children }) => {
             userManagementContractAddress, userManagementContractABI,
             trackManagementContractAddress, trackManagementContractABI,
             contractUser, setContractUser, users, setUsers,
-            currentRole, setCurrentRole, roles, roleList
+            currentRole, setCurrentRole, roles, roleList,
+            trackId, setTrackId
         }}>
             {children}
         </AppContext.Provider>

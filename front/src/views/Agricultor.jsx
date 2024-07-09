@@ -8,7 +8,7 @@ const AgricultorTrackingForm = () => {
 		userManagementContractAddress, userManagementContractABI,
         trackManagementContractAddress, trackManagementContractABI,
 		contractUser, setContractUser, users, setUsers,
-		currentRole, setCurrentRole, roles, roleList } = useAppContext();
+		currentRole, setCurrentRole, roles, roleList, setTrackId } = useAppContext();
 
     const [formData, setFormData] = useState({
         date: '',
@@ -43,7 +43,9 @@ const AgricultorTrackingForm = () => {
         //const privateKey = "0x5de4111afa1a4b94908f83103eb1f1706367c2e68ca870fc3fb9a804cdab365a";
         //const wallet = new ethers.Wallet(privateKey, provider);
 
-        const trackId = 2;
+        const number = Math.floor(Date.now() / 1000);
+        const trackId = number;
+        setTrackId(number);
         const { date, location, quantity, info: value } = data;
         const itemType = "Type A";
         const name = "Item A";
