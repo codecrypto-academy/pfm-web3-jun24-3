@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Form, Button } from 'react-bootstrap';
+import { Form, Button, Collapse, Alert} from 'react-bootstrap';
 import { ethers } from 'ethers';
 import { useAppContext  } from '../contexts/AppContext';
 
@@ -17,7 +17,7 @@ const Register = () => {
   const [isError, setIsError] = useState(false);
   const [txError, setTxError] = useState('');
   const [txHash, setTxHash] = useState('');
-
+  const [formError, setFormError] = useState();
 
   const handleEmailChange = (e) => {
     setEmail(e.target.value);
@@ -28,28 +28,58 @@ const Register = () => {
   };
 
 
+  const validateForm = () => {
+    let error = '';
+    let valid = true;
+
+    if (!email) {
+      error = error +  'Provide an email for registration';
+      valid = false;
+    }
+
+    if (!role) {
+      error = error +  'Select a role for registration';
+      valid = false;
+    }
+
+    setFormError(error);
+    return valid;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     setIsLoading(true);
-    const contractUsers = new ethers.Contract(
-                                      userManagementContractAddress, 
-                                      userManagementContractABI, 
-                                      signer);
 
-    try {
-      console.log('Calling contractUsers.registerUser with account,email,role,index: ', account,email,role,roleList.indexOf(role));
-      const tx = await contractUsers.registerUser(account, email, roleList.indexOf(role));
-      await tx.wait();
-      console.log('Register Success!! TX Hash: ', tx.hash);
-      setIsLoading(false);
-      setTxHash(tx.hash);
-    } catch (err) {
-      console.error('Register Failed!! Error: ', err);
-      setIsLoading(false);
-      setTxError(err);
-      setIsError(true);
+    if (validateForm()) {
+
+      const contractUsers = new ethers.Contract(
+        userManagementContractAddress, 
+        userManagementContractABI, 
+        signer);
+
+      try {
+        console.log('Calling contractUsers.registerUser with account,email,_role,index: ', account, email, roleList.indexOf(role));
+        const tx = await contractUsers.registerUser(account, email, roleList.indexOf(role));
+        await tx.wait();
+        console.log('Register Success!! TX Hash: ', tx.hash);
+        setIsLoading(false);
+        setTxHash(tx.hash);
+      } 
+        catch (err) {
+        console.error('Register Failed!! Error: ', err);
+        setIsLoading(false);
+        setTxError(err);
+        setIsError(true);
+      }
     }
+    else{
+        console.error('Form validation Failed!! ', formError);
+        setIsLoading(false);
+        setTxError(formError);
+        setIsError(true);
+    }
+    
 
   };
 
@@ -83,7 +113,7 @@ const Register = () => {
               <Form.Select
                 id="role"
                 name="role"
-                value={role}
+                value={roles.PENDIENTE_ASIGNACION_ROL}
                 onChange={handleRoleChange}
                 >
                 {Object.values(roles).map((role) => (
@@ -103,19 +133,21 @@ const Register = () => {
 			<div className='row'>
 				<div>
 					{isLoading && (
-						<div className='alert alert-success' role='alert'>
-							Registering ...
-						</div>
+              <Alert severity="info">
+                Registering ...
+              </Alert>
 					)}
 					{isError && (
-						<div className='alert alert-danger' role='alert'>
-							Oops! somethings was wrong. Error: {txError.message}
-						</div>
+              <Alert severity="error" variant="danger">
+                <p className="text-wrap text-break">
+                Oops! somethings was wrong. Error: {formError ? formError: txError.message }
+                </p>
+              </Alert>
 					)}
 					{!isLoading && !isError && txHash && (
-						<div className='alert alert-success' role='alert'>
-							{txHash}
-						</div>
+              <Alert severity="success">
+                Registration Success: TX Hash: {txHash}
+              </Alert>
 					)}
 				</div>
 			</div>

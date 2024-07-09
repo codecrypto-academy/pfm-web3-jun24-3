@@ -2,9 +2,7 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 import { ethers } from 'ethers';
 import { default as userManagementContractABIImport } from '../abi/UserManagementABI.json';
 
-
 const AppContext = createContext();
-
 
 export const AppContextProvider = ({ children }) => {
 
@@ -29,13 +27,9 @@ export const AppContextProvider = ({ children }) => {
     //Smart contracts
     const userManagementContractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
     const userManagementContractABI = userManagementContractABIImport;
+
     const [contractUser, setContractUser] = useState(null);
     const [users, setUsers] = useState([]);
-
-    /* TO COMPLETE
-    const trackManagementContractAddress = "TBD";
-    const trackManagementContractABI = TBD;
-    */
 
 
     //METAMASK HOOKS
