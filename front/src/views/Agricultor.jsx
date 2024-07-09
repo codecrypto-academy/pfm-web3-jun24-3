@@ -18,14 +18,8 @@ const AgricultorTrackingForm = () => {
     });
 
     const [isSubmitted, setIsSubmitted] = useState(false); // Estado adicional para el mensaje de confirmación
-    const [isSubmitted, setIsSubmitted] = useState(false); // Estado adicional para el mensaje de confirmación
 
-    const handleChange = (e) => {
-        setFormData({
-            ...formData,
-            [e.target.name]: e.target.value
-        });
-    };
+
     const handleChange = (e) => {
         setFormData({
             ...formData,
@@ -71,11 +65,6 @@ const AgricultorTrackingForm = () => {
         }
     };
 
-    const labelStyle = {
-        display: 'inline-block',
-        width: '250px',
-        marginRight: '10px'
-    };
     const labelStyle = {
         display: 'inline-block',
         width: '250px',
