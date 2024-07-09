@@ -7,6 +7,7 @@ const Register = () => {
 
   const { account, setAccount, balance, setBalance, provider, setProvider, signer, setSigner,
 		userManagementContractAddress, userManagementContractABI,
+    trackManagementContractAddress, trackManagementContractABI,
 		contractUser, setContractUser, users, setUsers,
 		currentRole, setCurrentRole,roles, roleList } = useAppContext();
 

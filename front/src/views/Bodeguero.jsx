@@ -1,6 +1,14 @@
 import React, { useState } from 'react';
+import { useAppContext  } from '../contexts/AppContext';
 
 const Bodegero = () => {
+
+	const { account, setAccount, balance, setBalance, provider, setProvider, signer, setSigner,
+		userManagementContractAddress, userManagementContractABI,
+        trackManagementContractAddress, trackManagementContractABI,
+		contractUser, setContractUser, users, setUsers,
+		currentRole, setCurrentRole, roles, roleList } = useAppContext();
+		
 	const [isSelected, setIsSelected] = useState(null);
 	const [showSelection, setShowSelection] = useState(true);
 	const [showForm, setShowForm] = useState(false);

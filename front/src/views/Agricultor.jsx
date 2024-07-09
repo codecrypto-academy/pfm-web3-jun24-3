@@ -1,8 +1,15 @@
 import React, { useState } from 'react';
 import { ethers } from 'ethers';
-import abi from '../abi/TrackABI.json';
+import { useAppContext  } from '../contexts/AppContext';
 
 const AgricultorTrackingForm = () => {
+
+    const { account, setAccount, balance, setBalance, provider, setProvider, signer, setSigner,
+		userManagementContractAddress, userManagementContractABI,
+        trackManagementContractAddress, trackManagementContractABI,
+		contractUser, setContractUser, users, setUsers,
+		currentRole, setCurrentRole, roles, roleList } = useAppContext();
+
     const [formData, setFormData] = useState({
         date: '',
         location: '',
@@ -30,24 +37,24 @@ const AgricultorTrackingForm = () => {
     };
 
     const addTrackItem = async (data) => {
-        const contractAddress = "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9";
-        const provider = new ethers.providers.JsonRpcProvider("http://127.0.0.1:8545");
-        const privateKey = "0x5de4111afa1a4b94908f83103eb1f1706367c2e68ca870fc3fb9a804cdab365a";
-        const wallet = new ethers.Wallet(privateKey, provider);
+        //const contractAddress = trackManagementContractAddress;
+        //const provider = new ethers.providers.JsonRpcProvider("http://127.0.0.1:8545");
+        //const privateKey = "0x5de4111afa1a4b94908f83103eb1f1706367c2e68ca870fc3fb9a804cdab365a";
+        //const wallet = new ethers.Wallet(privateKey, provider);
 
         const trackId = 2;
         const { date, location, quantity, info: value } = data;
         const itemType = "Type A";
         const name = "Item A";
-        const origin = "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC"; // Replace with the origin address
-        const owner = "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC"; // Replace with the owner address
+        //const origin = "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC"; // Replace with the origin address
+       // const owner = "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC"; // Replace with the owner address
         const status = 0; // Status.Disponible
         const itemHash = ethers.utils.formatBytes32String("hash1234");
 
-        const contract = new ethers.Contract(contractAddress, abi, wallet);
+        const contract = new ethers.Contract(trackManagementContractAddress, trackManagementContractABI, signer);
 
         try {
-            const tx = await contract.addTrackItem(trackId, date, location, quantity, itemType, name, origin, owner, status, value, itemHash);
+            const tx = await contract.addTrackItem(trackId, date, location, quantity, itemType, name, account, account, status, value, itemHash);
             console.log("Transaction sent:", tx.hash);
 
             const receipt = await tx.wait();

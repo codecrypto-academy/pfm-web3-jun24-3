@@ -1,9 +1,6 @@
 [
   {
     "type": "constructor",
-<<<<<<< HEAD
-    "inputs": [],
-=======
     "inputs": [
       {
         "name": "_userManagementAddress",
@@ -11,13 +8,10 @@
         "internalType": "address"
       }
     ],
->>>>>>> 73b031b (init2)
     "stateMutability": "nonpayable"
   },
   {
     "type": "function",
-<<<<<<< HEAD
-=======
     "name": "addTrackItem",
     "inputs": [
       {
@@ -162,7 +156,6 @@
   },
   {
     "type": "function",
->>>>>>> 73b031b (init2)
     "name": "owner",
     "inputs": [],
     "outputs": [
@@ -189,100 +182,6 @@
   },
   {
     "type": "function",
-<<<<<<< HEAD
-    "name": "setTrackId",
-    "inputs": [
-      {
-        "name": "_trackId",
->>>>>>> dafc47a (Add Track Abi)
-        "type": "uint256",
-        "internalType": "uint256"
-      }
-    ],
-<<<<<<< HEAD
-    "outputs": [
-      {
-        "name": "trackId",
-        "type": "uint256",
-        "internalType": "uint256"
-      },
-      {
-        "name": "trackItemId",
-        "type": "uint256",
-        "internalType": "uint256"
-      },
-      {
-        "name": "date",
-        "type": "string",
-        "internalType": "string"
-      },
-      {
-        "name": "location",
-        "type": "string",
-        "internalType": "string"
-      },
-      {
-        "name": "quantity",
-        "type": "string",
-        "internalType": "string"
-      },
-      {
-        "name": "itemType",
-        "type": "string",
-        "internalType": "string"
-      },
-      {
-        "name": "name",
-        "type": "string",
-        "internalType": "string"
-      },
-      {
-        "name": "origin",
-        "type": "address",
-        "internalType": "address"
-      },
-      {
-        "name": "owner",
-        "type": "address",
-        "internalType": "address"
-      },
-      {
-        "name": "status",
-        "type": "uint8",
-        "internalType": "enum Track.Status"
-      },
-      {
-        "name": "value",
-        "type": "string",
-        "internalType": "string"
-      },
-      {
-        "name": "itemHash",
-        "type": "bytes32",
-        "internalType": "bytes32"
-=======
-    "outputs": [],
-    "stateMutability": "nonpayable"
-  },
-  {
-    "type": "function",
-    "name": "setUser",
-    "inputs": [
-      {
-        "name": "_user",
-        "type": "address",
-        "internalType": "address"
-      }
-    ],
-    "outputs": [],
-    "stateMutability": "nonpayable"
-  },
-  {
-    "type": "function",
-    "name": "trackId",
-    "inputs": [],
-    "outputs": [
-=======
     "name": "tracks",
     "inputs": [
       {
@@ -290,61 +189,12 @@
         "type": "uint256",
         "internalType": "uint256"
       },
->>>>>>> 73b031b (init2)
       {
         "name": "",
         "type": "uint256",
         "internalType": "uint256"
->>>>>>> dafc47a (Add Track Abi)
       }
     ],
-<<<<<<< HEAD
-    "stateMutability": "view"
-  },
-  {
-<<<<<<< HEAD
-    "type": "event",
-    "name": "TrackItemAdded",
-    "inputs": [
-      {
-        "name": "trackId",
-        "type": "uint256",
-        "indexed": true,
-        "internalType": "uint256"
-      },
-      {
-        "name": "trackItemId",
-        "type": "uint256",
-        "indexed": true,
-        "internalType": "uint256"
-      },
-      {
-        "name": "status",
-        "type": "uint8",
-        "indexed": false,
-        "internalType": "enum Track.Status"
-      },
-      {
-        "name": "owner",
-        "type": "address",
-        "indexed": false,
-        "internalType": "address"
-      }
-    ],
-    "anonymous": false
-=======
-    "type": "function",
-    "name": "user",
-    "inputs": [],
-    "outputs": [
-      {
-        "name": "",
-        "type": "address",
-        "internalType": "address"
-      }
-    ],
-    "stateMutability": "view"
-=======
     "outputs": [
       {
         "name": "trackId",
@@ -439,6 +289,5 @@
       }
     ],
     "anonymous": false
->>>>>>> 73b031b (init2)
   }
 ]

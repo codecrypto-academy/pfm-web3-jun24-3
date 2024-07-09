@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { ethers } from 'ethers';
 import { default as userManagementContractABIImport } from '../abi/UserManagementABI.json';
+import { default as trackManagementContractABIImport } from '../abi/TrackABI.json';
 
 const AppContext = createContext();
 
@@ -27,6 +28,8 @@ export const AppContextProvider = ({ children }) => {
     //Smart contracts
     const userManagementContractAddress = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
     const userManagementContractABI = userManagementContractABIImport;
+    const trackManagementContractAddress = "0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0";
+    const trackManagementContractABI = trackManagementContractABIImport;
 
     const [contractUser, setContractUser] = useState(null);
     const [users, setUsers] = useState([]);
@@ -81,6 +84,7 @@ export const AppContextProvider = ({ children }) => {
         <AppContext.Provider value={{ 
             account, setAccount, balance, setBalance, provider, setProvider, signer, setSigner,
             userManagementContractAddress, userManagementContractABI,
+            trackManagementContractAddress, trackManagementContractABI,
             contractUser, setContractUser, users, setUsers,
             currentRole, setCurrentRole, roles, roleList
         }}>
