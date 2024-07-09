@@ -1,6 +1,7 @@
 [
   {
     "type": "constructor",
+<<<<<<< HEAD
     "inputs": [
       {
         "name": "_userManagementAddress",
@@ -8,10 +9,14 @@
         "internalType": "address"
       }
     ],
+=======
+    "inputs": [],
+>>>>>>> dafc47a (Add Track Abi)
     "stateMutability": "nonpayable"
   },
   {
     "type": "function",
+<<<<<<< HEAD
     "name": "addTrackItem",
     "inputs": [
       {
@@ -156,6 +161,8 @@
   },
   {
     "type": "function",
+=======
+>>>>>>> dafc47a (Add Track Abi)
     "name": "owner",
     "inputs": [],
     "outputs": [
@@ -182,6 +189,7 @@
   },
   {
     "type": "function",
+<<<<<<< HEAD
     "name": "tracks",
     "inputs": [
       {
@@ -191,10 +199,17 @@
       },
       {
         "name": "",
+=======
+    "name": "setTrackId",
+    "inputs": [
+      {
+        "name": "_trackId",
+>>>>>>> dafc47a (Add Track Abi)
         "type": "uint256",
         "internalType": "uint256"
       }
     ],
+<<<<<<< HEAD
     "outputs": [
       {
         "name": "trackId",
@@ -255,11 +270,39 @@
         "name": "itemHash",
         "type": "bytes32",
         "internalType": "bytes32"
+=======
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "setUser",
+    "inputs": [
+      {
+        "name": "_user",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "function",
+    "name": "trackId",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+>>>>>>> dafc47a (Add Track Abi)
       }
     ],
     "stateMutability": "view"
   },
   {
+<<<<<<< HEAD
     "type": "event",
     "name": "TrackItemAdded",
     "inputs": [
@@ -289,5 +332,18 @@
       }
     ],
     "anonymous": false
+=======
+    "type": "function",
+    "name": "user",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "view"
+>>>>>>> dafc47a (Add Track Abi)
   }
 ]
