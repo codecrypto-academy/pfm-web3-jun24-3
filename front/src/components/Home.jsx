@@ -25,14 +25,6 @@ function Home() {
 	useEffect(() => {
 
 		const loadHome = async () =>{
-			console.log('Loading Home component');
-			console.log('Home: account -> ' + account);
-			console.log('Home: balance -> ' + balance);
-			console.log('Home: provider -> ' + provider);
-			console.log('Home: signer -> ' + signer);
-			console.log('Home: userManagementContractAddress -> ' + userManagementContractAddress);
-			console.log('Home: userManagementContractABIs -> ' + userManagementContractABI);
-			console.log('Home: currentRole -> ' + currentRole);
 			
 			//load contract user
 			if(account){
@@ -50,18 +42,18 @@ function Home() {
 					const userInfo =  await getCurrentUserRole(contractUser);
 		
 					if(userInfo){
-						console.log('Home: userInfo.role -> ' + userInfo.role);
+						//console.log('Home: userInfo.role -> ' + userInfo.role);
 						setCurrentRole(userInfo.role);
-						console.log('Home: currentRole -> ' + currentRole);
+						//console.log('Home: currentRole -> ' + currentRole);
 					}
 		
 				}
 				else{
-					console.log('Home: NO signer available');
+					//console.log('Home: NO signer available');
 				}
 			}
 			else{
-				console.log('Home: NO account available');
+				//console.log('Home: NO account available');
 			}
 		
 		};
@@ -80,7 +72,7 @@ function Home() {
 			return userInfo;
 		}
 		else{
-			console.log('Home-getCurrentUserRole: NO contractUser avaliable');
+			//console.log('Home-getCurrentUserRole: NO contractUser avaliable');
 		}
 		
 	}

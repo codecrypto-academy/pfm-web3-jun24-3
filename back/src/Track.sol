@@ -30,6 +30,7 @@ contract Track {
     }
 
     mapping(uint256 => TrackItem[]) public tracks;
+    uint256[] public trackIds;
 
     event TrackItemAdded(uint256 indexed trackId, uint256 indexed trackItemId, Status status, address owner);
 
@@ -80,6 +81,11 @@ contract Track {
 
         tracks[_trackId].push(newItem);
 
+        // If it is the first item of a new trackId, add new trackId to array
+        if (tracks[_trackId].length == 1) {
+            trackIds.push(_trackId);
+        }
+
         emit TrackItemAdded(_trackId, trackItemId, Status(_status), _owner);
     }
 
@@ -100,5 +106,9 @@ contract Track {
 
     function getTrackItems(uint256 _trackId) public view returns (TrackItem[] memory) {
         return tracks[_trackId];
+    }
+
+    function getAllTrackIds() public view returns (uint256[] memory) {
+        return trackIds;
     }
 }

@@ -12,7 +12,7 @@ function Header() {
 
 
 	const currentUserInfo = users.find(user => user.address == {account});
-	console.log('currentUserInfo: ' + currentUserInfo);
+	//console.log('currentUserInfo: ' + currentUserInfo);
 
 	return (
 		<div className='bg-dark text-white text-center d-flex align-items-start justify-content-center py-4' >

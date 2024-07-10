@@ -11,6 +11,9 @@ const Bodegero = () => {
     const [showForm, setShowForm] = useState(false);
     const [isSubmitted, setIsSubmitted] = useState(false);
 
+    const [trackIds, setTrackIds] = useState([]);
+    const [expandedTracks, setExpandedTracks] = useState({});
+
     const [formData, setFormData] = useState({
         date: '',
         location: '',
@@ -23,13 +26,68 @@ const Bodegero = () => {
     }, []);
 
     const fetchTracks = async () => {
+
+        console.log('trackManagementContractAddress: ', trackManagementContractAddress);
+        console.log('trackManagementContractABI: ', trackManagementContractABI);
+        console.log('signer: ', signer);
+
         const contract = new ethers.Contract(trackManagementContractAddress, trackManagementContractABI, signer);
-		console.log("signer: ", signer);
-        try {
-            const tracks = await contract.getTrackItems(trackId);
-            setTracks(tracks);
-        } catch (error) {
-            console.error('Error fetching tracks:', error);
+
+        if(contract){
+
+            /*
+            try {
+                const trackId = 1;
+                console.log('Fetching track items of track: ', trackId);
+
+                const trackItems  = await contract.getTrackItems(trackId);
+                setTracks(trackItems);
+
+                console.log('Retrieved track items 0: ', trackItems);
+
+
+            } catch (error) {
+                console.error('Error fetching tracks:', error);
+            }
+            */
+
+            try {
+                console.log('Fetching tracks');
+
+                const tracks  = await contract.getAllTrackIds();
+
+                setTrackIds(tracks.map(id => id.toString())); // Cobert BigNumber to string to be able render in react
+                console.log('Retrieved tracks : ', tracks);
+
+
+            } catch (error) {
+                console.error('Error fetching tracks:', error);
+            }
+
+        }
+        else{
+            console.error('Undefined track contract reference');
+        }
+
+    };
+
+    const expandTrack = async (trackId) => {
+
+        const contract = new ethers.Contract(trackManagementContractAddress, trackManagementContractABI, signer);
+
+        if (expandedTracks[trackId]) {
+            setExpandedTracks(prev => ({ ...prev, [trackId]: false }));
+        } 
+        else {
+            try {
+
+            const trackItems = await contract.getTrackItems(trackId);
+
+            setExpandedTracks(prev => ({ ...prev, [trackId]: trackItems }));
+            } 
+            catch (error) {
+            console.error(`Error fetching track items for trackId ${trackId}:`, error);
+            }
         }
     };
 
@@ -192,6 +250,46 @@ const Bodegero = () => {
                     )}
                 </>
             )}
+            <div>
+            <h1>Track List</h1>
+                <ul>
+                    {trackIds.length > 0 ? 
+                        (
+                            trackIds.map((trackId) => (
+                                <React.Fragment key={trackId}>
+                                    <tr onClick={() => expandTrack(trackId)}>
+                                    <td>Track ID: {trackId}</td>
+                                    </tr>
+                                    {expandedTracks[trackId] && (
+                                    <tr>
+                                        <td>
+                                        <ul>
+                                            {expandedTracks[trackId].map((item, index) => (
+                                            <li key={index}>
+                                                <p>Date: {item.date}</p>
+                                                <p>Location: {item.location}</p>
+                                                <p>Quantity: {item.quantity}</p>
+                                                <p>Item Type: {item.itemType}</p>
+                                                <p>Name: {item.name}</p>
+                                                <p>Origin: {item.origin}</p>
+                                                <p>Owner: {item.owner}</p>
+                                                <p>Status: {item.status}</p>
+                                                <p>Value: {item.value}</p>
+                                                <p>Item Hash: {item.itemHash}</p>
+                                            </li>
+                                            ))}
+                                        </ul>
+                                        </td>
+                                    </tr>
+                                    )}
+                                </React.Fragment>
+                            ))
+                        ) : (
+                            <p>No tracks found</p>
+                        )
+                    }
+                </ul>
+            </div>
         </div>
     );
 };
