@@ -121,10 +121,10 @@ const Bodegero = () => {
     const addTrackItem = async (data) => {
         const trackId = isSelected;
         const { date, location, quantity, info: value } = data;
-        const itemType = "Type B";
-        const name = "Item B";
+        const itemType = "Botella de Vino";
+        const name = "Botella Piloto";
         const status = 0; // Status.Disponible
-        const itemHash = ethers.utils.formatBytes32String("hash1234");
+        const itemHash = ethers.utils.formatBytes32String("hash1");
 
         const contract = new ethers.Contract(trackManagementContractAddress, trackManagementContractABI, signer);
 		console.log("contract contetn: ", contract);
@@ -150,7 +150,7 @@ const Bodegero = () => {
     const selectedData = tracks.find(item => item.id === isSelected);
 
     return (
-        <div>
+        <div style={{ marginBottom: '50px' }} >
             {isSubmitted ? (
                 <h1 style={{ textAlign: 'center', fontSize: '24px', fontWeight: 'bold', color: '#000000', marginTop: '24px' }}>🎉 Registro completado 🎉</h1>
             ) : (

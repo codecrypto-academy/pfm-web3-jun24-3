@@ -87,8 +87,8 @@ const Vendedor = () => {
     const addTrackItem = async (data) => {
         const trackId = isSelected;
         const { date, location, quantity, info: value } = data;
-        const itemType = "Type C";
-        const name = "Item C";
+		const itemType = "Botella vendidas al por mayor";
+        const name = "venta Piloto";
         const status = 0; // Status.Disponible
         const itemHash = ethers.utils.formatBytes32String("hash1234");
 
@@ -112,7 +112,7 @@ const Vendedor = () => {
     const selectedData = tracks.find(item => item.id === isSelected);
 
     return (
-        <div>
+        <div style={{ marginBottom: '50px' }} >
             {isSubmitted ? (
                 <h1 style={{ textAlign: 'center', fontSize: '24px', fontWeight: 'bold', color: '#000000', marginTop: '24px' }}>🎉 Registro completado 🎉</h1>
             ) : (
