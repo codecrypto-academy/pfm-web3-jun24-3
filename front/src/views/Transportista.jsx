@@ -155,9 +155,9 @@ const Transportista = () => {
                                                 <React.Fragment key={trackId}>
                                                     <div onClick={() => expandTrack(trackId)}>
                                                         <a href="#">Click to show track details</a>
-                                                    </div>
+                                                    </div >
                                                     {expandedTracks[trackId] && (
-                                                        <div>
+                                                        <div className="text-start">
                                                             <ul>
                                                                 {expandedTracks[trackId].map((item, index) => (
                                                                     <li key={index}>

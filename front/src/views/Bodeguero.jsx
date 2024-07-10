@@ -182,30 +182,30 @@ const Bodegero = () => {
                                                 </td>
                                                 <td>{trackId}</td>
                                                 <React.Fragment key={trackId}>
-<div onClick={() => expandTrack(trackId)}>
-<a href="#">Click to show track details</a>
-</div>
-	{expandedTracks[trackId] && (
-	<div>
-		<ul>
-			{expandedTracks[trackId].map((item, index) => (
-				<li key={index}>
-					<p>Date: {item.date}</p>
-					<p>Location: {item.location}</p>
-					<p>Quantity: {item.quantity}</p>
-					<p>Item Type: {item.itemType}</p>
-					<p>Name: {item.name}</p>
-					<p>Origin: {item.origin}</p>
-					<p>Owner: {item.owner}</p>
-					<p>Status: {item.status}</p>
-					<p>Value: {item.value}</p>
-					<p>Item Hash: {item.itemHash}</p>
-				</li>
-			))}
-		</ul>
-	</div>
-	)}
-</React.Fragment>
+                                                    <div onClick={() => expandTrack(trackId)}>
+                                                    <a href="#">Click to show track details</a>
+                                                    </div>
+                                                    {expandedTracks[trackId] && (
+                                                    <div className="text-start">
+                                                        <ul>
+                                                            {expandedTracks[trackId].map((item, index) => (
+                                                                <li key={index}>
+                                                                    <p>Date: {item.date}</p>
+                                                                    <p>Location: {item.location}</p>
+                                                                    <p>Quantity: {item.quantity}</p>
+                                                                    <p>Item Type: {item.itemType}</p>
+                                                                    <p>Name: {item.name}</p>
+                                                                    <p>Origin: {item.origin}</p>
+                                                                    <p>Owner: {item.owner}</p>
+                                                                    <p>Status: {item.status}</p>
+                                                                    <p>Value: {item.value}</p>
+                                                                    <p>Item Hash: {item.itemHash}</p>
+                                                                </li>
+                                                            ))}
+                                                        </ul>
+                                                    </div>
+                                                    )}
+                                                </React.Fragment>
                                             </tr>
                                         ))}
                                     </tbody>

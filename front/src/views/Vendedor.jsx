@@ -148,7 +148,7 @@ const Vendedor = () => {
                                                         <a href="#">Click to show track details</a>
                                                     </div>
                                                     {expandedTracks[trackId] && (
-                                                        <div>
+                                                        <div className="text-start">
                                                             <ul>
                                                                 {expandedTracks[trackId].map((item, index) => (
                                                                     <li key={index}>

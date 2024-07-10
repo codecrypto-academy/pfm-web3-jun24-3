@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ethers } from 'ethers';
 import { useAppContext  } from '../contexts/AppContext';
 
@@ -18,6 +18,58 @@ const AgricultorTrackingForm = () => {
     });
 
     const [isSubmitted, setIsSubmitted] = useState(false); // Estado adicional para el mensaje de confirmación
+    const [trackIds, setTrackIds] = useState([]);
+    const [expandedTracks, setExpandedTracks] = useState({});
+
+    useEffect(() => {
+        fetchTracks();
+    }, []);
+
+    const fetchTracks = async () => {
+
+        console.log('trackManagementContractAddress: ', trackManagementContractAddress);
+        console.log('trackManagementContractABI: ', trackManagementContractABI);
+        console.log('signer: ', signer);
+
+        const contract = new ethers.Contract(trackManagementContractAddress, trackManagementContractABI, signer);
+
+        if(contract){
+            try {
+                console.log('Fetching tracks');
+
+                const tracks  = await contract.getAllTrackIds();
+
+                setTrackIds(tracks.map(id => id.toString())); // Cobert BigNumber to string to be able render in react
+                console.log('Retrieved tracks : ', tracks);
+            } catch (error) {
+                console.error('Error fetching tracks:', error);
+            }
+        }
+        else{
+            console.error('Undefined track contract reference');
+        }
+
+    };
+
+    const expandTrack = async (trackId) => {
+
+        const contract = new ethers.Contract(trackManagementContractAddress, trackManagementContractABI, signer);
+
+        if (expandedTracks[trackId]) {
+            setExpandedTracks(prev => ({ ...prev, [trackId]: false }));
+        } 
+        else {
+            try {
+
+            const trackItems = await contract.getTrackItems(trackId);
+
+            setExpandedTracks(prev => ({ ...prev, [trackId]: trackItems }));
+            } 
+            catch (error) {
+            console.error(`Error fetching track items for trackId ${trackId}:`, error);
+            }
+        }
+    };
 
 
     const handleChange = (e) => {
@@ -38,10 +90,7 @@ const AgricultorTrackingForm = () => {
     };
 
     const addTrackItem = async (data) => {
-        //const contractAddress = trackManagementContractAddress;
-        //const provider = new ethers.providers.JsonRpcProvider("http://127.0.0.1:8545");
-        //const privateKey = "0x5de4111afa1a4b94908f83103eb1f1706367c2e68ca870fc3fb9a804cdab365a";
-        //const wallet = new ethers.Wallet(privateKey, provider);
+
 
         const number = Math.floor(Date.now() / 1000);
         const trackId = number;
@@ -49,8 +98,6 @@ const AgricultorTrackingForm = () => {
         const { date, location, quantity, info: value } = data;
         const itemType = "Uva";
         const name = "Prueba Piloto";
-        //const origin = "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC"; // Replace with the origin address
-       // const owner = "0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC"; // Replace with the owner address
         const status = 0; // Status.Disponible
         const itemHash = ethers.utils.formatBytes32String("hash");
 
@@ -103,6 +150,53 @@ const AgricultorTrackingForm = () => {
                     </div>
                 </form>
             )}
+
+<div className='bg-white text-black text-center py-4'>
+                <div className='bg-light border p-2'>
+                    <h3>Track list</h3>
+                    <table className="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th scope="col">TrackId</th>
+                                <th scope="col">Track Details</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {trackIds.map((trackId) => (
+                                <tr key={trackId}>
+                                    <td>{trackId}</td>
+                                    <React.Fragment key={trackId}>
+                                        <div onClick={() => expandTrack(trackId)}>
+                                        Click to show track details
+                                        </div>
+                                        {expandedTracks[trackId] && (
+                                        <div className="text-start">
+                                            <ul>
+                                                {expandedTracks[trackId].map((item, index) => (
+                                                    <li key={index}>
+                                                        <p>Date: {item.date}</p>
+                                                        <p>Location: {item.location}</p>
+                                                        <p>Quantity: {item.quantity}</p>
+                                                        <p>Item Type: {item.itemType}</p>
+                                                        <p>Name: {item.name}</p>
+                                                        <p>Origin: {item.origin}</p>
+                                                        <p>Owner: {item.owner}</p>
+                                                        <p>Status: {item.status}</p>
+                                                        <p>Value: {item.value}</p>
+                                                        <p>Item Hash: {item.itemHash}</p>
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                        )}
+                                    </React.Fragment>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
         </div>
     );
 
