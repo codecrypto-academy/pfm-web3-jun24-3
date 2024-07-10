@@ -1,171 +1,248 @@
-import React, { useState } from 'react';
-import { useAppContext  } from '../contexts/AppContext';
+import React, { useState, useEffect } from 'react';
+import { ethers } from 'ethers';
+import { useAppContext } from '../contexts/AppContext';
 
 const Transportista = () => {
+    const {
+        account, signer,
+        trackManagementContractAddress, trackManagementContractABI
+    } = useAppContext();
 
-	const { account, setAccount, balance, setBalance, provider, setProvider, signer, setSigner,
-		userManagementContractAddress, userManagementContractABI,
-        trackManagementContractAddress, trackManagementContractABI,
-		contractUser, setContractUser, users, setUsers,
-		currentRole, setCurrentRole, roles, roleList } = useAppContext();
-		
-	const [isSelected, setIsSelected] = useState(null);
-	const [showSelection, setShowSelection] = useState(true);
-	const [showForm, setShowForm] = useState(false);
-	const [isSubmitted, setIsSubmitted] = useState(false);
+    const [tracks, setTracks] = useState([]);
+    const [isSelected, setIsSelected] = useState(null);
+    const [showSelection, setShowSelection] = useState(true);
+    const [showForm, setShowForm] = useState(false);
+    const [isSubmitted, setIsSubmitted] = useState(false);
 
-	const data = [
-		{ id: 1, date: '2023-07-01', location: 'Albacete', info: 'Uvas tipo 1', quantity: '500' },
-		{ id: 2, date: '2023-07-02', location: 'Galicia', info: 'Uvas tipo 2', quantity: '300' },
-		{ id: 3, date: '2023-07-03', location: 'Andalucía', info: 'Uvas tipo 3', quantity: '400' },
-		{ id: 4, date: '2023-07-04', location: 'Murcia', info: 'Uvas tipo 4', quantity: '200' },
-		{ id: 5, date: '2023-07-05', location: 'La Rioja', info: 'Uvas tipo 5', quantity: '600' }
-	];
+    const [trackIds, setTrackIds] = useState([]);
+    const [expandedTracks, setExpandedTracks] = useState({});
 
-	const [formData, setFormData] = useState({
-		date: '',
-		location: '',
-		quantity: '',
-		info: ''
-	});
+    const [formData, setFormData] = useState({
+        date: '',
+        location: '',
+        quantity: '',
+        info: ''
+    });
 
-	const handleSelectionChange = (id) => {
-		setIsSelected(id);
-	};
+    useEffect(() => {
+        fetchTracks();
+    }, []);
 
-	const handleTrace = () => {
-		if (isSelected !== null) {
-			setShowSelection(false);
-			setShowForm(true);
-		} else {
-			alert('Seleccione una opción');
-		}
-	};
+    const fetchTracks = async () => {
+        console.log('trackManagementContractAddress: ', trackManagementContractAddress);
+        console.log('trackManagementContractABI: ', trackManagementContractABI);
+        console.log('signer: ', signer);
 
-	const handleSubmit = (e) => {
-		e.preventDefault();
-		setIsSubmitted(true);
-		setShowForm(false);
-	};
+        const contract = new ethers.Contract(trackManagementContractAddress, trackManagementContractABI, signer);
 
-	const handleChange = (e) => {
-		setFormData({
-			...formData,
-			[e.target.name]: e.target.value
-		});
-	};
+        if (contract) {
+            try {
+                console.log('Fetching tracks');
+                const tracks = await contract.getAllTrackIds();
+                setTrackIds(tracks.map(id => id.toString())); // Convert BigNumber to string to be able to render in react
+                console.log('Retrieved tracks : ', tracks);
+            } catch (error) {
+                console.error('Error fetching tracks:', error);
+            }
+        } else {
+            console.error('Undefined track contract reference');
+        }
+    };
 
-	const labelStyle = {
-		display: 'inline-block',
-		width: '250px',
-		marginRight: '10px'
-	};
+    const expandTrack = async (trackId) => {
+        const contract = new ethers.Contract(trackManagementContractAddress, trackManagementContractABI, signer);
 
-	const selectedData = data.find(item => item.id === isSelected);
+        if (expandedTracks[trackId]) {
+            setExpandedTracks(prev => ({ ...prev, [trackId]: false }));
+        } else {
+            try {
+                const trackItems = await contract.getTrackItems(trackId);
+                setExpandedTracks(prev => ({ ...prev, [trackId]: trackItems }));
+            } catch (error) {
+                console.error(`Error fetching track items for trackId ${trackId}:`, error);
+            }
+        }
+    };
 
-	return (
-		<div>
-			{isSubmitted ? (
-				<h1 style={{ textAlign: 'center', fontSize: '24px', fontWeight: 'bold', color: '#000000', marginTop: '24px' }}>🎉 Registro completado 🎉</h1>
-			) : (
-				<>
-					{showSelection && (
-						<div className='bg-white text-black text-center py-4'>
-							<div className='bg-light border p-2'>
-							<h3>Seleccione el registro a añadir información</h3>
-								<table className="table table-bordered">
-									<thead>
-										<tr>
-											<th scope="col">Seleccion</th>
-											<th scope="col">Origen</th>
-											<th scope="col">Información</th>
-											<th scope="col">Cantidad</th>
-										</tr>
-									</thead>
-									<tbody>
-										{data.map((item) => (
-											<tr key={item.id}>
-												<td>
-													<input
-														className="form-check-input"
-														type="radio"
-														name="transportistaSelection"
-														value={item.id}
-														checked={isSelected === item.id}
-														onChange={() => handleSelectionChange(item.id)}
-													/>
-												</td>
-												<td>{item.location}</td>
-												<td>{item.info}</td>
-												<td>{item.quantity}</td>
-											</tr>
-										))}
-									</tbody>
-								</table>
-								<button className='btn btn-dark' onClick={handleTrace}>
-									Seleccionar Registro
-								</button>
-							</div>
-						</div>
-					)}
+    const handleSelectionChange = (id) => {
+        setIsSelected(id);
+    };
 
-					{showForm && (
-						<div>
-							{selectedData && (
-								<div className='bg-white text-black text-center py-4'>
-									<div className='bg-light border p-2'>
-										<h3>Registro Seleccionado</h3>
-										<table className="table table-bordered">
-											<thead>
-												<tr>
-													<th scope="col">Origen</th>
-													<th scope="col">Información</th>
-													<th scope="col">Cantidad</th>
-												</tr>
-											</thead>
-											<tbody>
-												<tr>
-													<td>{selectedData.location}</td>
-													<td>{selectedData.info}</td>
-													<td>{selectedData.quantity}</td>
-												</tr>
-											</tbody>
-										</table>
-									</div>
-								</div>
-							)}
+    const handleTrace = () => {
+        if (isSelected !== null) {
+            setShowSelection(false);
+            setShowForm(true);
+        } else {
+            alert('Seleccione una opción');
+        }
+    };
 
-							<form onSubmit={handleSubmit}>
-								<div style={{ marginBottom: '20px' }}></div>
-								<h1 style={{ textAlign: 'center', fontSize: '24px', fontWeight: 'bold', color: '#000000', marginBottom: '20px' }}>✍🏻 Añadir Información al Track ✍🏻</h1>
-								<div style={{ marginBottom: '20px' }}>
-									<label style={labelStyle}>Fecha:</label>
-									<input type="date" name="date" value={formData.date} onChange={handleChange} required />
-								</div>
-								<div style={{ marginBottom: '10px' }}>
-									<label style={labelStyle}>Ubicación:</label>
-									<input type="text" name="location" value={formData.location} style={{ width: '300px' }} onChange={handleChange} required />
-								</div>
-								<div style={{ marginBottom: '10px' }}>
-									<label style={labelStyle}>Cantidad:</label>
-									<input type="number" name="quantity" value={formData.quantity} style={{ width: '75px' }} onChange={handleChange} required />
-								</div>
-								<div style={{ marginBottom: '10px' }}>
-									<label style={labelStyle}>Información Adicional:</label>
-									<input type="text" name="info" value={formData.info} style={{ width: '600px' }} onChange={handleChange} required />
-								</div>
-								<div style={{ marginBottom: '30px', justifyContent: 'center' }}></div>
-								<div style={{ display: 'flex', justifyContent: 'center' }}>
-									<button type="submit">Registrar</button>
-								</div>
-								<div style={{ marginBottom: '100px', justifyContent: 'center' }}></div>
-							</form>
-						</div>
-					)}
-				</>
-			)}
-		</div>
-	);
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        await addTrackItem(formData);
+        setIsSubmitted(true);
+        setShowForm(false);
+    };
+
+    const handleChange = (e) => {
+        setFormData({
+            ...formData,
+            [e.target.name]: e.target.value
+        });
+    };
+
+    const addTrackItem = async (data) => {
+        const trackId = isSelected;
+        const { date, location, quantity, info: value } = data;
+        const itemType = "Type B";
+        const name = "Item B";
+        const status = 0; // Status.Disponible
+        const itemHash = ethers.utils.formatBytes32String("hash1234");
+
+        const contract = new ethers.Contract(trackManagementContractAddress, trackManagementContractABI, signer);
+        console.log("contract content: ", contract);
+
+        try {
+            const tx = await contract.addTrackItem(trackId, date, location, quantity, itemType, name, account, account, status, value, itemHash);
+            console.log("Transaction sent:", tx.hash);
+            const receipt = await tx.wait();
+            console.log("Transaction confirmed:", receipt);
+        } catch (error) {
+            console.error("Error adding track item:", error);
+        }
+    };
+
+    const labelStyle = {
+        display: 'inline-block',
+        width: '250px',
+        marginRight: '10px'
+    };
+
+    const selectedData = tracks.find(item => item.id === isSelected);
+
+    return (
+        <div>
+            {isSubmitted ? (
+                <h1 style={{ textAlign: 'center', fontSize: '24px', fontWeight: 'bold', color: '#000000', marginTop: '24px' }}>🎉 Registro completado 🎉</h1>
+            ) : (
+                <>
+                    {showSelection && (
+                        <div className='bg-white text-black text-center py-4'>
+                            <div className='bg-light border p-2'>
+                                <h3>Seleccione el registro a añadir información</h3>
+                                <table className="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Seleccion</th>
+                                            <th scope="col">TrackId</th>
+                                            <th scope="col">Track Details</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {trackIds.map((trackId) => (
+                                            <tr key={trackId}>
+                                                <td>
+                                                    <input
+                                                        className="form-check-input"
+                                                        type="radio"
+                                                        name="transportistaSelection"
+                                                        value={trackId}
+                                                        checked={isSelected === trackId}
+                                                        onChange={() => handleSelectionChange(trackId)}
+                                                    />
+                                                </td>
+                                                <td>{trackId}</td>
+                                                <React.Fragment key={trackId}>
+                                                    <div onClick={() => expandTrack(trackId)}>
+                                                        Click to show track details
+                                                    </div>
+                                                    {expandedTracks[trackId] && (
+                                                        <div>
+                                                            <ul>
+                                                                {expandedTracks[trackId].map((item, index) => (
+                                                                    <li key={index}>
+                                                                        <p>Date: {item.date}</p>
+                                                                        <p>Location: {item.location}</p>
+                                                                        <p>Quantity: {item.quantity}</p>
+                                                                        <p>Item Type: {item.itemType}</p>
+                                                                        <p>Name: {item.name}</p>
+                                                                        <p>Origin: {item.origin}</p>
+                                                                        <p>Owner: {item.owner}</p>
+                                                                        <p>Status: {item.status}</p>
+                                                                        <p>Value: {item.value}</p>
+                                                                        <p>Item Hash: {item.itemHash}</p>
+                                                                    </li>
+                                                                ))}
+                                                            </ul>
+                                                        </div>
+                                                    )}
+                                                </React.Fragment>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                                <button className='btn btn-dark' onClick={handleTrace}>
+                                    Seleccionar Registro
+                                </button>
+                            </div>
+                        </div>
+                    )}
+
+                    {showForm && (
+                        <div>
+                            {selectedData && (
+                                <div className='bg-white text-black text-center py-4'>
+                                    <div className='bg-light border p-2'>
+                                        <h3>Registro Seleccionado</h3>
+                                        <table className="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">Origen</th>
+                                                    <th scope="col">Información</th>
+                                                    <th scope="col">Cantidad</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>{selectedData.location}</td>
+                                                    <td>{selectedData.info}</td>
+                                                    <td>{selectedData.quantity}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            )}
+
+                            <form onSubmit={handleSubmit}>
+                                <div style={{ marginBottom: '20px' }}></div>
+                                <h1 style={{ textAlign: 'center', fontSize: '24px', fontWeight: 'bold', color: '#000000', marginBottom: '20px' }}>✍🏻 Añadir Información al Track ✍🏻</h1>
+                                <div style={{ marginBottom: '20px' }}>
+                                    <label style={labelStyle}>Fecha:</label>
+                                    <input type="date" name="date" value={formData.date} onChange={handleChange} required />
+                                </div>
+                                <div style={{ marginBottom: '10px' }}>
+                                    <label style={labelStyle}>Ubicación:</label>
+                                    <input type="text" name="location" value={formData.location} style={{ width: '300px' }} onChange={handleChange} required />
+                                </div>
+                                <div style={{ marginBottom: '10px' }}>
+                                    <label style={labelStyle}>Cantidad:</label>
+                                    <input type="number" name="quantity" value={formData.quantity} style={{ width: '75px' }} onChange={handleChange} required />
+                                </div>
+                                <div style={{ marginBottom: '10px' }}>
+                                    <label style={labelStyle}>Información Adicional:</label>
+                                    <input type="text" name="info" value={formData.info} style={{ width: '600px' }} onChange={handleChange} required />
+                                </div>
+                                <button type="submit" className="btn btn-dark">
+                                    Registrar Información
+                                </button>
+                            </form>
+                        </div>
+                    )}
+                </>
+            )}
+        </div>
+    );
 };
 
 export default Transportista;
