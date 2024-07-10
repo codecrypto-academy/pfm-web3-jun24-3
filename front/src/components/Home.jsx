@@ -105,7 +105,7 @@ function Home() {
 								</Link>
 							</li>
 							<li className={account && isNavItemEnabled(currentRole, 1) ? '' : 'disabled'}  onClick={() => handleItemClick('bodeguero')}>
-								<Link className={selectedItem === 'bodegero' ? 'nav-link active' : 'nav-link'} to={'/bodeguero'}>
+								<Link className={selectedItem === 'bodeguero' ? 'nav-link active' : 'nav-link'} to={'/bodeguero'}>
 									Bodeguero
 								</Link>
 							</li>

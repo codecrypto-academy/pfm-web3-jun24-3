@@ -83,7 +83,7 @@ contract UserManagementTest is Test {
         UserManagement.Role[] memory roles = userManagement.getRoles();
 
         assertEq(uint(roles[0]), uint(UserManagement.Role.Agricultor));
-        assertEq(uint(roles[1]), uint(UserManagement.Role.Bodegero));
+        assertEq(uint(roles[1]), uint(UserManagement.Role.Bodeguero));
         assertEq(uint(roles[2]), uint(UserManagement.Role.Transportista));
         assertEq(uint(roles[3]), uint(UserManagement.Role.Vendedor));
         assertEq(uint(roles[4]), uint(UserManagement.Role.Admin));
@@ -98,7 +98,7 @@ contract UserManagementTest is Test {
         string[] memory roles = userManagement.getRolesAsString();
 
         assertEq(roles[0], "Agricultor");
-        assertEq(roles[1], "Bodegero");
+        assertEq(roles[1], "Bodeguero");
         assertEq(roles[2], "Transportista");
         assertEq(roles[3], "Vendedor");
         assertEq(roles[4], "Admin");

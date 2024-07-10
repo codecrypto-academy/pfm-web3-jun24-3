@@ -92,7 +92,7 @@ contract Track {
     function canAddItem(UserManagement.Role role, Status status) internal pure returns (bool) {
         if (status == Status.Disponible && role == UserManagement.Role.Agricultor) {
             return true;
-        } else if ((status == Status.Procesando || status == Status.Embotellado) && role == UserManagement.Role.Bodegero) {
+        } else if ((status == Status.Procesando || status == Status.Embotellado) && role == UserManagement.Role.Bodeguero) {
             return true;
         } else if (status == Status.EnRuta && role == UserManagement.Role.Transportista) {
             return true;

@@ -11,7 +11,7 @@ contract TrackTest is Test {
 
     address private owner = address(0x123);
     address private agricultor = address(0x124);
-    address private bodegero = address(0x125);
+    address private bodeguero = address(0x125);
     address private transportista = address(0x126);
     address private vendedor = address(0x127);
     address private minorista = address(0x128);
@@ -40,10 +40,10 @@ contract TrackTest is Test {
             userManagement.setUserRole(agricultor, uint(UserManagement.Role.Agricultor));
         }
 
-        userInfo = userManagement.getUserInfo(bodegero);
+        userInfo = userManagement.getUserInfo(bodeguero);
         if (!userInfo.isRegistered) {
-            userManagement.registerUser(bodegero, "bodegero@example.com", 1);
-            userManagement.setUserRole(bodegero, uint(UserManagement.Role.Bodegero));
+            userManagement.registerUser(bodeguero, "bodeguero@example.com", 1);
+            userManagement.setUserRole(bodeguero, uint(UserManagement.Role.Bodeguero));
         }
 
         userInfo = userManagement.getUserInfo(transportista);
@@ -95,10 +95,10 @@ contract TrackTest is Test {
         assertEq(uint(items[0].status), uint(Track.Status.Disponible));
     }
 
-    function testFailAddTrackItemAsBodegeroWithStatusDisponible() public {
-        vm.prank(bodegero);
+    function testFailAddTrackItemAsBodegueroWithStatusDisponible() public {
+        vm.prank(bodeguero);
         vm.expectRevert("Error: Unauthorized role for this status");
-        try track.addTrackItem(1, "2024/06/01", "Spain", "1000 kg", "Lote Uva Tipo 1", "Bodegero1", bodegero, bodegero, 0, "Precio de venta", keccak256(abi.encodePacked("itemHash"))) {
+        try track.addTrackItem(1, "2024/06/01", "Spain", "1000 kg", "Lote Uva Tipo 1", "Bodeguero1", bodeguero, bodeguero, 0, "Precio de venta", keccak256(abi.encodePacked("itemHash"))) {
             emit log("Expected revert, but call succeeded");
             assert(false);
         } catch Error(string memory reason) {
@@ -109,9 +109,9 @@ contract TrackTest is Test {
         }
     }
 
-    function testAddTrackItemAsBodegeroWithStatusProcesando() public {
-        vm.prank(bodegero);
-        track.addTrackItem(1, "2024/06/02", "Spain", "1000 kg", "Lote Uva Tipo 1", "Bodegero1", bodegero, bodegero, 1, "Precio de venta", keccak256(abi.encodePacked("itemHash")));
+    function testAddTrackItemAsBodegueroWithStatusProcesando() public {
+        vm.prank(bodeguero);
+        track.addTrackItem(1, "2024/06/02", "Spain", "1000 kg", "Lote Uva Tipo 1", "Bodeguero1", bodeguero, bodeguero, 1, "Precio de venta", keccak256(abi.encodePacked("itemHash")));
 
         Track.TrackItem[] memory items = track.getTrackItems(1);
         emit log_named_uint("Items length", items.length);

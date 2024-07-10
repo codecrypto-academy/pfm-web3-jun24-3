@@ -145,7 +145,7 @@ const Vendedor = () => {
                                                 <td>{trackId}</td>
                                                 <React.Fragment key={trackId}>
                                                     <div onClick={() => expandTrack(trackId)}>
-                                                        Click to show track details
+                                                        <a href="#">Click to show track details</a>
                                                     </div>
                                                     {expandedTracks[trackId] && (
                                                         <div>

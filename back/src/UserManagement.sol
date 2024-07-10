@@ -4,7 +4,7 @@ pragma solidity 0.8.26;
 contract UserManagement {
     enum Role {
         Agricultor,
-        Bodegero,
+        Bodeguero,
         Transportista,
         Vendedor,
         Admin,
@@ -68,7 +68,7 @@ contract UserManagement {
     function getRoles() public pure returns (Role[] memory) {
         Role[] memory roles = new Role[](7);
         roles[0] = Role.Agricultor;
-        roles[1] = Role.Bodegero;
+        roles[1] = Role.Bodeguero;
         roles[2] = Role.Transportista;
         roles[3] = Role.Vendedor;
         roles[4] = Role.Admin;
@@ -80,7 +80,7 @@ contract UserManagement {
     function getRolesAsString() public pure returns (string[] memory) {
         string[] memory roles = new string[](7);
         roles[0] = roleToString(Role.Agricultor);
-        roles[1] = roleToString(Role.Bodegero);
+        roles[1] = roleToString(Role.Bodeguero);
         roles[2] = roleToString(Role.Transportista);
         roles[3] = roleToString(Role.Vendedor);
         roles[4] = roleToString(Role.Admin);
@@ -91,7 +91,7 @@ contract UserManagement {
 
     function roleToString(Role _role) internal pure returns (string memory) {
         if (_role == Role.Agricultor) return "Agricultor";
-        if (_role == Role.Bodegero) return "Bodegero";
+        if (_role == Role.Bodeguero) return "Bodeguero";
         if (_role == Role.Transportista) return "Transportista";
         if (_role == Role.Vendedor) return "Vendedor";
         if (_role == Role.Admin) return "Admin";
