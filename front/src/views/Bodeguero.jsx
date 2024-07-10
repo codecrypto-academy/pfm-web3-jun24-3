@@ -163,27 +163,49 @@ const Bodegero = () => {
                                     <thead>
                                         <tr>
                                             <th scope="col">Seleccion</th>
-                                            <th scope="col">Origen</th>
-                                            <th scope="col">Información</th>
-                                            <th scope="col">Cantidad</th>
+                                            <th scope="col">TrackId</th>
+                                            <th scope="col">Track Details</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {tracks.map((item) => (
-                                            <tr key={item.id}>
+                                        {trackIds.map((trackId) => (
+                                            <tr key={trackId}>
                                                 <td>
                                                     <input
                                                         className="form-check-input"
                                                         type="radio"
                                                         name="transportistaSelection"
-                                                        value={item.id}
-                                                        checked={isSelected === item.id}
-                                                        onChange={() => handleSelectionChange(item.id)}
+                                                        value={trackId}
+                                                        checked={isSelected === trackId}
+                                                        onChange={() => handleSelectionChange(trackId)}
                                                     />
                                                 </td>
-                                                <td>{item.location}</td>
-                                                <td>{item.info}</td>
-                                                <td>{item.quantity}</td>
+                                                <td>{trackId}</td>
+                                                <React.Fragment key={trackId}>
+<div onClick={() => expandTrack(trackId)}>
+Click to show track details
+</div>
+	{expandedTracks[trackId] && (
+	<div>
+		<ul>
+			{expandedTracks[trackId].map((item, index) => (
+				<li key={index}>
+					<p>Date: {item.date}</p>
+					<p>Location: {item.location}</p>
+					<p>Quantity: {item.quantity}</p>
+					<p>Item Type: {item.itemType}</p>
+					<p>Name: {item.name}</p>
+					<p>Origin: {item.origin}</p>
+					<p>Owner: {item.owner}</p>
+					<p>Status: {item.status}</p>
+					<p>Value: {item.value}</p>
+					<p>Item Hash: {item.itemHash}</p>
+				</li>
+			))}
+		</ul>
+	</div>
+	)}
+</React.Fragment>
                                             </tr>
                                         ))}
                                     </tbody>
@@ -250,46 +272,7 @@ const Bodegero = () => {
                     )}
                 </>
             )}
-            <div>
-            <h1>Track List</h1>
-                <ul>
-                    {trackIds.length > 0 ? 
-                        (
-                            trackIds.map((trackId) => (
-                                <React.Fragment key={trackId}>
-                                    <tr onClick={() => expandTrack(trackId)}>
-                                    <td>Track ID: {trackId}</td>
-                                    </tr>
-                                    {expandedTracks[trackId] && (
-                                    <tr>
-                                        <td>
-                                        <ul>
-                                            {expandedTracks[trackId].map((item, index) => (
-                                            <li key={index}>
-                                                <p>Date: {item.date}</p>
-                                                <p>Location: {item.location}</p>
-                                                <p>Quantity: {item.quantity}</p>
-                                                <p>Item Type: {item.itemType}</p>
-                                                <p>Name: {item.name}</p>
-                                                <p>Origin: {item.origin}</p>
-                                                <p>Owner: {item.owner}</p>
-                                                <p>Status: {item.status}</p>
-                                                <p>Value: {item.value}</p>
-                                                <p>Item Hash: {item.itemHash}</p>
-                                            </li>
-                                            ))}
-                                        </ul>
-                                        </td>
-                                    </tr>
-                                    )}
-                                </React.Fragment>
-                            ))
-                        ) : (
-                            <p>No tracks found</p>
-                        )
-                    }
-                </ul>
-            </div>
+            
         </div>
     );
 };
